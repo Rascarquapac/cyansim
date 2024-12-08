@@ -1,0 +1,10 @@
+/cyaneval.env/*
+/venv/*
+/tmp/*
+/purgatory/*
+/usecase/__pycache__
+/.ipynb_checkpoints/*
+__pycache__/*
+/.streamlit/*
+test*
+.DS_Store
