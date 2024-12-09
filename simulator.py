@@ -6,6 +6,7 @@ from x_lens    import Lens
 from view      import View
 from cyangear  import Cyangear
 from message   import Messages
+from draw      import Draw
 
 def ui_init():
     # Define first state
@@ -16,6 +17,7 @@ def ui_init():
     st.session_state.cyangear = Cyangear()
     st.session_state.messages = Messages()
     st.session_state.view     = View(st.session_state)
+    st.session_state.draw     = Draw()
     # Initiate drawings
     st.session_state.analyze_done = False
 
@@ -66,7 +68,6 @@ with cameraSelection :
     with st.expander("More info about selected cameras",expanded=False):
         message = st.session_state.messages.display(object=st.session_state.camera)
         st.write(message)
-
 with networkSelection:
     if not st.session_state.network.df.empty :
         st.subheader('Select networks (optional):')
@@ -89,5 +90,5 @@ with motivations:
 with mermaid:
     if st.session_state.analyze_done and not st.session_state.lens.df.empty :
         # MERMAID RENDERING
-        html = st.session_state.cyangear.mermaidize()
+        html = st.session_state.draw.mermaidize(st.session_state.cyangear)
         st.write(html, unsafe_allow_html=True)

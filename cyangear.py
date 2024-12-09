@@ -3,7 +3,6 @@ from cyancameralens import CameraLens
 from cyanglue import *
 from cyanmedium import Medium
 from cyanrcp import *
-from cyandraw import Draw
 
 class Cyangear():
     def __init__(self) -> None:
@@ -244,9 +243,3 @@ class Cyangear():
         # print('########## DEVICES :',self.devices)
         # print('########## CABLEs :',self.cables)
         pass
-    def mermaidize(self):
-        draw = Draw(self.df)
-        svg_code = draw.get_mermaid_code()
-        mermaid_graph=draw.graph_mermaid(svg_code)
-        html = draw.streamlit_mermaid(mermaid_graph)
-        return(html)

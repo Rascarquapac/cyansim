@@ -40,7 +40,6 @@ class LensTypeNeed(StrEnum):
     CAMERA_IN = 'Camera Integrated'
     MANUAL    = 'Manual'
     NONE      = 'No Need' # ! "No need" ?
-
 class MotorNeed(StrEnum):
     NONE = 'No extra motors'
     INTEGRATED = 'Camera Integrated'
@@ -67,7 +66,6 @@ class CameraCategories(StrEnum):
     FIXED_LENS = 'Fixed Lens'
     MINICAM_MOT_LENS= 'Minicam Motorizable Lens'
     TBD = 'TBD' 
-
 class Network_Enum(StrEnum):
      LAN_WIRED = "LAN Wired"  
      LAN_RF_HALOW = "LAN RF Halow"

@@ -1,14 +1,15 @@
 import base64
 import mermaid as md
+import pandas as pd
 from mermaid.graph  import Graph
 from cyancameralens import CamLensBlock
 #################### DRAW WITH MERMAID ###########################
 class Draw():
-    def __init__(self,df) -> None:
-        self.df = df
+    def __init__(self) -> None:
+        self.df  = pd.DataFrame()
         self.obj = {}
         pass
-    def get_mermaid_code(self):
+    def get_mermaid_code(self,cyangear_df):
         def objectize():
             for index in self.df.index.to_list():
                 self.obj[index] = CamLensBlock(index,self.df.loc[index])
@@ -51,6 +52,7 @@ class Draw():
             return code
         def clean(code):
             return(code.replace(' ', ''))
+        self.df = cyangear_df
         objectize()
         mermaid_code = ''
         mermaid_code = 'graph RL\n'
@@ -159,4 +161,9 @@ class Draw():
         svg_html = mermaid_graph._repr_html_()
         result = render_svg(svg_html) 
         return(result)
+    def mermaidize(self,cyangear):
+        mermaid_code = self.get_mermaid_code(cyangear.df)
+        mermaid_graph=self.graph_mermaid(mermaid_code)
+        html = self.streamlit_mermaid(mermaid_graph)
+        return(html)
 
