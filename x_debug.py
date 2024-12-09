@@ -31,8 +31,8 @@ class Debug():
 	def camera(self, data = None,mode = None,record=False, pkl=False,output=False,dump=False):
 		self.debug(data = data,mode = 'camera',record=record, output=output,dump=dump)
 	def network(self, data = None,mode = None,record=False, pkl=False,output=False,dump=False):
-		self.debug(data = data,mode = 'camera',record=record, output=output,dump=dump)
+		self.debug(data = data,mode = 'network',record=record, output=output,dump=dump)
 	def lens(self, data = None,mode = None,record=False, pkl=False,output=False,dump=False):
-		self.debug(data = data,mode = 'camera',record=record, output=output,dump=dump)
+		self.debug(data = data,mode = 'lens',record=record, output=output,dump=dump)
 	def pool(self, data = None,mode = None,record=False, pkl=False,output=False,dump=False):
 		self.debug(data = data,mode = 'camera',record=record, output=output,dump=dump)

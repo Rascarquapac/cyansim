@@ -1,0 +1,36 @@
+::: mermaid
+flowchart TD
+subgraph CYANSIM_UI
+	subgraph CAMERA_TAB
+		Pattern
+		Brand
+		Type
+		Cameras
+	end
+	subgraph NETWORK_TAB
+		Network
+	end
+	subgraph LENS_TAB
+		Lens
+	end
+	subgraph SCHEME_TAB
+		Scheme
+	end
+end
+subgraph VIEW
+	V_pattern
+	V_brand
+	V_type
+	V_cameras
+	V_network
+	V_lens
+	V_scheme
+end
+Pattern-->V_pattern
+Scheme-->V_scheme
+Brand-->V_brand
+Type-->V_type
+Network-->V_network
+Lens-->V_lens
+Cameras-->V_cameras
+:::
