@@ -1,8 +1,8 @@
 /cyaneval.env/*
 /venv/*
+/venv_bis/*
 /tmp/*
 /purgatory/*
-/usecase/__pycache__
 /.ipynb_checkpoints/*
 __pycache__/*
 /.streamlit/*
