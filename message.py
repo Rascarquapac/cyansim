@@ -1,7 +1,7 @@
 import csv
 import re
 import pickle
-from x_camera import Camera
+from x_camera import CameraTabView
 from cyangear import Cyangear
 
 class Messages():
@@ -14,7 +14,7 @@ class Messages():
             self.dic = pickle.load(file)        
         return
     def display(self,object=None, subtopic=""):
-        if isinstance(object,Camera):
+        if isinstance(object,CameraTabView):
             return self.cameras(object.selected)
         elif isinstance(object,Cyangear):
             return self.cyangear(object)
