@@ -1,7 +1,7 @@
 import csv
 import re
 import pickle
-from x_camera import CameraTabView
+from camera  import CameraTabView
 from cyangear import Cyangear
 
 class Messages():

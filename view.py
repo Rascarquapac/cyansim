@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas    as pd
-from x_camera import Camera
+from camera import Camera
 from constants import Network_Enum
 
 class View():
