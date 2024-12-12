@@ -156,16 +156,16 @@ class CamLensBlock():
         self.df_index  = index
         self.reference = serie['Reference']
         self.protocol  = serie['Protocol']
-        self.camera_id   = serie['Camera_id'] 
-        self.device_id   = serie['Device_id'] 
-        self.cable       = serie['Cable']
-        self.device      = serie['Device']
+        self.camera_id = serie['Camera_id'] 
+        self.device_id = serie['Device_id'] 
+        self.cable     = serie['Cable']
+        self.device    = serie['Device']
         #lensControl,lensType,lensMotor
         self.lensControl = serie['lensControl']
         self.lensType    = serie['lensType']
         self.lensMotor   = serie['lensMotor']
         #LensCable,MotorCable,LensMotor
-        self.llensCable = serie['LensCable']
+        self.llensCable  = serie['LensCable']
         self.lmotorCable = serie['MotorCable']
         self.llensMotor  = serie['LensMotor']
         self.camLensCat  = serie['CameraLensCategory']

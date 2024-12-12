@@ -36,7 +36,7 @@ class Camera():
             except:
                 cameras_df = gsheet()
         return(cameras_df)
-    def pattern(self,camera_pattern="",brand="",camera_type=""):
+    def matching(self,camera_pattern="",brand="",camera_type=""):
         if camera_pattern != None and camera_pattern != "":
             pattern_selection = self.df.filter(like=camera_pattern,axis=0)
         else:
@@ -72,17 +72,17 @@ class CameraTabView():
     def select(self):
         pattern = st.session_state.camera_pattern.upper()
         if ("brand_selector" not in st.session_state) and ("type_selector" not in st.session_state):
-            st.session_state.camera.pattern(camera_pattern=pattern)
+            st.session_state.camera.matching(camera_pattern=pattern)
         elif ("type_selector" not in st.session_state):
             brand = st.session_state.brand_selector
-            st.session_state.camera.pattern(camera_pattern=pattern,brand=brand)
+            st.session_state.camera.matching(camera_pattern=pattern,brand=brand)
         elif ("brand_selector" not in st.session_state):
             camera_type = st.session_state.type_selector
-            st.session_state.camera.pattern(camera_pattern=pattern,camera_type=camera_type)
+            st.session_state.camera.matching(camera_pattern=pattern,camera_type=camera_type)
         else:
             brand   = st.session_state.brand_selector
             camera_type = st.session_state.type_selector
-            st.session_state.camera.pattern(camera_pattern=pattern,brand=brand,camera_type=camera_type)
+            st.session_state.camera.matching(camera_pattern=pattern,brand=brand,camera_type=camera_type)
         return
     def edit_number(self):
         camera = self
