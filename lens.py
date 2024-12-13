@@ -31,8 +31,6 @@ class LensTabView():
 		pass
 	def edit(self):
 		def edit_camera_lens(df,cameraLensCategory):
-			print("edit_camera_lens.df:")
-			print(df)
 			if (len(df.index) != 0): 
 				df = st.data_editor(
 					df,
@@ -83,25 +81,19 @@ class LensTabView():
 		#cameraLensCategory est l'élément de sélection
 		if 'LensTypes' not in pool.df.columns:
 			pool.df['LensTypes']=""
-		#print("DF Columns:",pool.df.columns)
-		#print("SELECTED Columns:",pool.selected.columns)
 		cameraLensCategories = pool.df["CameraLensCategory"].unique()
 		pool.df.to_csv('debug_pool_display_lens.csv', index=False)
 		#print("################CAMERAS LENS CATEGORIES  :",cameraLensCategories)
 		for cameraLensCategory in cameraLensCategories:
 			#filter instance dataframe by type
 			selected_rows = pool.df.loc[pool.df['CameraLensCategory'] == cameraLensCategory]
-			#print(cameraLensCategories)
-			#print(selected_rows)
 			if not selected_rows.empty :
 				st.markdown(cameraLensCategory)
 				#??? NO USE?? constraints = Lens.filter_constraints(cameraLensCategory)
 				blocks[cameraLensCategory] = edit_camera_lens(selected_rows,cameraLensCategory)
-		#print("################CAMERAS LENS CATEGORIES END################# :",cameraLensCategories)
 		print("blocks.values:",list(blocks.values()))
 		if list(blocks.values()) != []:
 			final_df = pd.concat(list(blocks.values()))
-		#print("StreamUI->pool_edit_camera_for_lens-> POOL.FINAL columns:\n",pool.final.columns)
 		return final_df
     
 if __name__  == "__main__":

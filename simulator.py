@@ -72,7 +72,6 @@ with networkSelection:
         st.subheader('Select networks (optional):')
         network_df = st.session_state.network.view.edit(selected_df)
         st.session_state.lens.setdf(network_df)
-        st.session_state.cyangear.analyze(st.session_state.lens.df)
         st.session_state.analyze_done = True
         with st.expander("Required equipment for use case",expanded=False):
             message = st.session_state.messages.display(object=st.session_state.cyangear)
