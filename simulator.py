@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from pprint import pprint
+from pool  import Pool
 from camera  import Camera
 from network import Network
 from lens    import Lens
@@ -13,8 +14,9 @@ def ui_init():
     # Define first state
     st.session_state.running = True
     st.session_state.camera   = Camera(update=True)
-    st.session_state.network  = Network()
-    st.session_state.lens     = Lens()
+    pool = Pool()
+    st.session_state.network  = Network(pool)
+    st.session_state.lens     = Lens(pool)
     st.session_state.cyangear = Cyangear()
     st.session_state.messages = Messages()
     st.session_state.view     = View(st.session_state)

@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 from cyancameralens import CameraLens
 class Lens():
-	def __init__(self):
-		self.df         = pd.DataFrame()
+	def __init__(self,pool):
+		self.df         = pool.df
 		self.view       = LensTabView()
 		self.cameralens = CameraLens()
 	def setdf(self,df):

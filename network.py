@@ -3,8 +3,8 @@ import pandas as pd
 from constants import Network_Enum
 
 class Network():
-	def __init__(self):
-		self.df = pd.DataFrame()
+	def __init__(self,pool):
+		self.df = pool.df
 		self.view = NetworkTabView(self.df)
 	def setdf(self, df):
 		if df.empty:
