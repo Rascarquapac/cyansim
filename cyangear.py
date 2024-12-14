@@ -1,34 +1,37 @@
 import pandas as pd
+from pool import Pool
 from cyancameralens import CameraLens
 from cyanglue import *
 from cyanmedium import Medium
 from cyanrcp import *
 
 class Cyangear():
-    def __init__(self) -> None:
-        self.df = pd.DataFrame()
-        self.dic= {}
-        self.devices_state = DevicesState(self.df)
-    def setdf(self,df):
-        self.df = df
+    def __init__(self,pool) -> None:
+        self.pool = pool
+        self.df  = {}
+        self.dic = {}
+        self.devices_state = DevicesState(self.pool.df)
+        self.rcps    = {}
+        self.cables  = {}
+        self.devices = {}
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
-    def instances_df(self,pool_df = None):
+    def instances_df(self):
         # Create a dictionnary from the Pool dataframe with 
-        #     key = instance name based on dataframe index
+        #     key = instance name based on Pool dataframe index
         #     data = dataframe row retlated to the index as a list
-        def dataframe_to_dic(pool_df):
+        def dataframe_to_dic():
             paths_dict = {}
-            if not pool_df.empty:
-                for camera_index in pool_df.index.to_list():
-                    for i in range(int(pool_df.loc[camera_index,'Number'])):
+            if not self.pool.df.empty:
+                for camera_index in self.pool.df.index.to_list():
+                    for i in range(int(self.pool.df.loc[camera_index,'Number'])):
                         new_index = str(camera_index) + "_" + str(i) 
                         variables = []
-                        variables.extend(pool_df.loc[camera_index].tolist())
+                        variables.extend(self.pool.df.loc[camera_index].tolist())
                         paths_dict[new_index] = list(variables)
             return (paths_dict)
         # Create a dataframe from dictionnary   
-        def dic_to_dataframe(paths_dict,pool_df):
-            df = pd.DataFrame.from_dict(paths_dict, orient = 'index', columns = pool_df.columns.values)
+        def dic_to_dataframe(paths_dict):
+            df = pd.DataFrame.from_dict(paths_dict, orient = 'index', columns = self.pool.df.columns.values)
             df.index.name = 'Instance'     
             return(df)
         # Suppress and add columns
@@ -53,9 +56,9 @@ class Cyangear():
             self.df['LensTypeNeed']     = "TBD"
             self.df['LensMotorNeed']    = "TBD"
             return
-        if not pool_df.empty:
-            paths_dict = dataframe_to_dic(pool_df)
-            self.df = dic_to_dataframe(paths_dict,pool_df)
+        if not self.pool.df.empty:
+            paths_dict = dataframe_to_dic()
+            self.df = dic_to_dataframe(paths_dict)
             columns()       
         return 
     # Create a dictionnary of objects associated to the dataframe index
@@ -190,7 +193,6 @@ class Cyangear():
                 self.df.loc[index,'RCP_id'] = RCP_id 
                 #??self.df.loc[index,'RCPtype'] = RCPtype 
     def rcp_count(self):
-        self.rcps = {}
         rcp_ids = self.df['RCP_id'].unique()
         for rcp_id in rcp_ids:
             rcp_index  = self.df.loc[self.df['RCP_id'] == rcp_id].index.tolist()[0]
@@ -201,13 +203,11 @@ class Cyangear():
                 self.rcps[rcp_type] += 1
     # Count Cables for quoting
     def cable_count(self):
-        self.cables = {}
         cable_types = self.df['Cable'].unique()
         for cable_type in cable_types:
             self.cables[cable_type] = self.df['Cable'].tolist().count(cable_type)
     # Count devices for quoting
     def device_count(self):
-        self.devices = {}
         device_ids = self.df['Device_id'].unique()
         for device_id in device_ids:
             device_index  = self.df.loc[self.df['Device_id'] == device_id].index.tolist()[0]
@@ -216,8 +216,8 @@ class Cyangear():
                 self.devices[device_type] = 1
             else:
                 self.devices[device_type] += 1
-    def analyze(self,pool_df = None):
-        self.instances_df(pool_df)
+    def analyze(self):
+        self.instances_df()
         self.set_objects_dic()
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
