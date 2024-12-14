@@ -1,5 +1,3 @@
-import csv
-import re
 import pickle
 from view_camera  import ViewCamera
 from x_cyangear import Cyangear
@@ -17,7 +15,7 @@ class Messages():
         if isinstance(object,ViewCamera):
             return self.cameras(object.selected)
         elif isinstance(object,Cyangear):
-            return self.pool(object)
+            return self.cyangear(object)
         else:
             search_topic    = "instance"
             search_subtopic = "general" if subtopic == "" else subtopic
@@ -50,11 +48,14 @@ class Messages():
                 if (df.loc[camera,'Bidirectionnal']) == "No":
                     message += ("\n" + self.dic['camera']['unidirectional'])
         return(message)
-    def pool(self,object):
+    def cyangear(self,object):
         message = ""
-        if object.df.empty:
+        if object.pool.df.empty:
             message = ""
-            print("CYANGEAR DATAFRAME IS EMPTY … ")
+            print("POOL DATAFRAME IS EMPTY … ")
+        if not object.dic:
+            message = ""
+            print("CYANGEAR ATTRIBUTES ARE EMPTY … ")
         else:
             message+=self.dic['quote']['general']
             message += "\n"

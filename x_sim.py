@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from pprint   import pprint
 from load import Descriptor
-from pool     import Pool
+from pool import Pool
 from view_sidebar  import Sidebar
 from view_camera   import ViewCamera
 from view_network  import ViewNetwork
@@ -77,7 +77,7 @@ with networkSelection:
         st.session_state.network.edit()
         st.session_state.analyze_done = True
         with st.expander("Required equipment for use case",expanded=False):
-            message = st.session_state.messages.display(object=st.session_state.pool)
+            message = st.session_state.messages.display(object=st.session_state.cyangear)
             st.write(message)
 with lensSelection:
     if not st.session_state.pool.df.empty :

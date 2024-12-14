@@ -11,6 +11,9 @@ class Cyangear():
 #        self.df = pool.df
         self.dic= {}
         self.devices_state = DevicesState(self.pool.df)
+        self.rcps    = {}
+        self.cables  = {}
+        self.devices = {}
     def setdf(self,df):
         self.df = df
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
@@ -192,7 +195,6 @@ class Cyangear():
                 self.df.loc[index,'RCP_id'] = RCP_id 
                 #??self.df.loc[index,'RCPtype'] = RCPtype 
     def rcp_count(self):
-        self.rcps = {}
         rcp_ids = self.df['RCP_id'].unique()
         for rcp_id in rcp_ids:
             rcp_index  = self.df.loc[self.df['RCP_id'] == rcp_id].index.tolist()[0]
@@ -203,13 +205,11 @@ class Cyangear():
                 self.rcps[rcp_type] += 1
     # Count Cables for quoting
     def cable_count(self):
-        self.cables = {}
         cable_types = self.df['Cable'].unique()
         for cable_type in cable_types:
             self.cables[cable_type] = self.df['Cable'].tolist().count(cable_type)
     # Count devices for quoting
     def device_count(self):
-        self.devices = {}
         device_ids = self.df['Device_id'].unique()
         for device_id in device_ids:
             device_index  = self.df.loc[self.df['Device_id'] == device_id].index.tolist()[0]
