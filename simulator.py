@@ -7,7 +7,7 @@ from view_sidebar  import Sidebar
 from view_camera   import ViewCamera
 from view_network  import ViewNetwork
 from view_lens     import ViewLens
-from x_cyangear import Cyangear
+from cyangear import Cyangear
 from message  import Messages
 from draw     import Draw
 
@@ -82,7 +82,6 @@ with networkSelection:
 with lensSelection:
     if not st.session_state.pool.df.empty :
         st.session_state.lens.edit()
-        #st.session_state.cyangear.setdf(lens_df)
         st.session_state.cyangear.analyze()
         st.session_state.analyze_done = True
 with motivations:

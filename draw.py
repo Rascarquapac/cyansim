@@ -2,92 +2,14 @@ import base64
 import mermaid as md
 import pandas as pd
 from mermaid.graph  import Graph
-from cyancameralens import CamLensBlock
+from drawcode import Mermaid
 #################### DRAW WITH MERMAID ###########################
 class Draw():
     def __init__(self) -> None:
-        self.df  = pd.DataFrame()
+        self.df      = pd.DataFrame()
+        self.mermaid = Mermaid()
         self.obj = {}
         pass
-    def get_mermaid_code(self,cyangear_df):
-        def objectize():
-            for index in self.df.index.to_list():
-                self.obj[index] = CamLensBlock(index,self.df.loc[index])
-        def camera_lens(index):
-            camera_id   = self.df.loc[index,'Camera_id'] 
-            device_id   = self.df.loc[index,'Device_id'] 
-            cable       = self.df.loc[index,'Cable']
-            device      = self.df.loc[index,'Device']
-            #lensControl,lensType,lensMotor
-            lensControl = self.df.loc[index,'lensControl']
-            lensType    = self.df.loc[index,'lensType']
-            lensMotor   = self.df.loc[index,'lensMotor']
-            #LensCable,MotorCable,LensMotor
-            llensCable = self.df.loc[index,'LensCable']
-            lmotorCable = self.df.loc[index,'MotorCable']
-            llensMotor  = self.df.loc[index,'LensMotor']
-            code = ''
-            code += clean(camera_id) + '{{"' + clean(camera_id) + ' fa:fa-camera-retro"}}---|'+clean(cable) +'|'+clean(device_id)+'\n'
-            # Add lens edge if lens required and cable needed
-            lens_id = f'{clean(lensType)}_{clean(camera_id)}'
-            if lensType != 'TBD' and llensCable != 'No cable' :
-                code += f'{lens_id}([{lensType}])---|{clean(llensCable)}|{clean(device_id)}\n'
-            # Add subgraph for camera + lens
-            subgraph_id   = f'{clean(camera_id)}_cameralens'
-            if lensControl == 'No Need':
-                subgraph_title = 'No lens control required'
-            elif lensControl == 'Iris':
-                subgraph_title = 'Iris control required'
-            elif lensControl == 'IZF':
-                subgraph_title = 'Iris/Zoom/Focus control required'
-            else:
-                subgraph_title = lensControl
-
-            code += f'  subgraph {subgraph_id} [{subgraph_title}]\n'
-            code += f'    {clean(camera_id)}\n'
-            if lensType != 'TBD' and llensCable != 'No Cable' :
-                code += f'    {lens_id}\n'
-            code += '  end\n'
-            
-            return code
-        def clean(code):
-            return(code.replace(' ', ''))
-        self.df = cyangear_df
-        objectize()
-        mermaid_code = ''
-        mermaid_code = 'graph RL\n'
-        ####### DRAW CAMERAS & DEVICES ##############
-        camgroups = self.df['Camgroup'].unique() 
-        for camgroup in camgroups:
-            camgroup_indexes  = self.df.loc[self.df['Camgroup'] == camgroup].index.tolist() 
-            mermaid_code+= 'subgraph ' + camgroup + "\n"
-            for index in camgroup_indexes:
-                # mermaid_code += camera_lens(index)
-                mermaid_code += self.obj[index].code
-            mermaid_code += 'end\n'
-        ###### DRAW SWITCHES #######################
-        # croom = self.init_graph("Control",'sink')
-        mermaid_code += 'subgraph "Control Room" \n'
-        switches = self.df['Switch_id'].unique() 
-        for switch in switches:
-            switch_df  = self.df.loc[self.df['Switch_id'] == switch]
-            device_ids = switch_df['Device_id'].unique()
-            # croom.node(name=switch,label=switch)
-            for device_id in device_ids:
-                mermaid_code += clean(device_id) + ' --- |Ethernet|' + clean(switch) + '\n'
-        ####### DRAW RCPS ########################
-        rcps = self.df['RCP_id'].unique() 
-        for rcp in rcps:
-            switch_df  = self.df.loc[self.df['RCP_id'] == rcp]
-            switches  = switch_df['Switch_id'].unique()
-            for switch in switches:
-                RCPtype = switch_df['RCPtype'].unique()[0]
-                mermaid_code += clean(switch) + ' --- |Ethernet|' + clean(rcp) + '\n'
-        mermaid_code += 'end\n'
-        code = ':::mermaid\n' + mermaid_code  + '\n:::\n' 
-        with open('./debug/mermaid_code_obj.md', 'w') as f:
-            f.write(code)
-        return(mermaid_code)
     def graph_mermaid(self,code):
         if code == None :
             mermaid_code = """
@@ -162,7 +84,7 @@ class Draw():
         result = render_svg(svg_html) 
         return(result)
     def mermaidize(self,cyangear):
-        mermaid_code = self.get_mermaid_code(cyangear.df)
+        mermaid_code = self.mermaid.code(cyangear)
         mermaid_graph=self.graph_mermaid(mermaid_code)
         html = self.streamlit_mermaid(mermaid_graph)
         return(html)
