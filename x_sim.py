@@ -1,25 +1,27 @@
 import streamlit as st
 import pandas as pd
-from pprint import pprint
-from pool  import Pool
-from camera  import Camera
-from x_network import Network
-from x_lens    import Lens
-from view      import View
-from x_cyangear  import Cyangear
-from message   import Messages
-from draw      import Draw
+from pprint   import pprint
+from load import Descriptor
+from pool     import Pool
+from view_sidebar  import Sidebar
+from view_camera   import ViewCamera
+from view_network  import ViewNetwork
+from view_lens     import ViewLens
+from x_cyangear import Cyangear
+from message  import Messages
+from draw     import Draw
 
 def ui_init():
     # Define first state
     st.session_state.running = True
-    st.session_state.camera   = Camera(update=True)
+    st.session_state.descriptor = Descriptor(update=True)
+    st.session_state.camera   = ViewCamera(st.session_state.descriptor)
     st.session_state.pool     = Pool()
-    st.session_state.network  = Network(st.session_state.pool)
-    st.session_state.lens     = Lens(st.session_state.pool)
+    st.session_state.network  = ViewNetwork(st.session_state.pool)
+    st.session_state.lens     = ViewLens(st.session_state.pool)
     st.session_state.cyangear = Cyangear(st.session_state.pool)
     st.session_state.messages = Messages()
-    st.session_state.view     = View(st.session_state)
+    st.session_state.sidebar  = Sidebar()
     st.session_state.draw     = Draw()
     # Initiate drawings
     st.session_state.analyze_done = False
@@ -32,7 +34,7 @@ st.header('Cyanview Gear Simulator V0.0')
 # Logo
 st.logo("images/cyan-logo-letters-light_background.png")
 # Set sidebar
-st.session_state.view.sidebar()
+st.session_state.sidebar.display()
 # Set tabs
 cameraSelection,networkSelection,lensSelection, mermaid, motivations = st.tabs(["Cameras","IP Network" ,"Lens", "Scheme","Motivations"])
 with cameraSelection :
@@ -44,30 +46,30 @@ with cameraSelection :
             value = "",
             key   = "camera_pattern",
             placeholder = "Enter substring of camera name",
-            on_change   = st.session_state.camera.view.select)
+            on_change   = st.session_state.camera.select)
     with col2:
         brand = st.selectbox(
             label   = "Select Brand:",
-            options = st.session_state.camera.view.brand_df,
+            options = st.session_state.camera.brand_df,
             index   = None,
             key     = "brand_selector",
             placeholder = "Choose an option",
-            on_change   = st.session_state.camera.view.select)
+            on_change   = st.session_state.camera.select)
     with col3:
         camtype = st.selectbox(
             label   = "Select Camera Type:",
-            options = st.session_state.camera.view.type_df,
+            options = st.session_state.camera.type_df,
             index   = None,
             key     = "type_selector",
             placeholder = "Choose an option",
-            on_change   = st.session_state.camera.view.select)
-    st.session_state.camera.view.edit_number()
+            on_change   = st.session_state.camera.select)
+    st.session_state.camera.edit_number()
     st.divider()
     st.caption("Your Current Cameras Pool")
-    camera_pool = st.session_state.camera.view.display_selected()
+    camera_pool = st.session_state.camera.display_selected()
     st.session_state.pool.update(camera_pool)
     with st.expander("More info about selected cameras",expanded=False):
-        message = st.session_state.messages.display(object=st.session_state.camera.view)
+        message = st.session_state.messages.display(object=st.session_state.camera)
         st.write(message)
 with networkSelection:
     if not st.session_state.pool.df.empty :
@@ -75,7 +77,7 @@ with networkSelection:
         st.session_state.network.edit()
         st.session_state.analyze_done = True
         with st.expander("Required equipment for use case",expanded=False):
-            message = st.session_state.messages.display(object=st.session_state.cyangear)
+            message = st.session_state.messages.display(object=st.session_state.pool)
             st.write(message)
 with lensSelection:
     if not st.session_state.pool.df.empty :

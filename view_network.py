@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from constants import Network_Enum
 
-class Network():
+class ViewNetwork():
 	def __init__(self,pool):
 		self.pool = pool
 		self.df   = pool.df

@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
-from cyancameralens import CameraLens
-class Lens():
+class ViewLens():
 	def __init__(self,pool):
 		self.pool       = pool        
-		self.cameralens = CameraLens()
 	def edit(self):
 		def edit_camera_lens(df,cameraLensCategory):
 			if (len(df.index) != 0): 
@@ -73,4 +71,4 @@ class Lens():
 		return final_df
     
 if __name__  == "__main__":
-	test = Lens()
+	test = ViewLens()

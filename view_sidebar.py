@@ -1,13 +1,10 @@
 import streamlit as st
-import pandas    as pd
-from camera import Camera
-from constants import Network_Enum
 
-class View():
-    def __init__(self,session_state) -> None:
-        self.session_state = session_state
+class Sidebar():
+    def __init__(self) -> None:
+        pass
     # SIDEBAR
-    def sidebar(self):
+    def display(self):
         # Sidebar
         st.sidebar.header(("Workflow"))
         st.sidebar.markdown((

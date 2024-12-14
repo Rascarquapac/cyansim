@@ -23,3 +23,6 @@ class Pool:
 		else:
 			self.df = camera_pool
 			columns()
+class PoolLens():
+	def __init__(self):
+		pass

@@ -1,8 +1,8 @@
 import csv
 import re
 import pickle
-from camera  import CameraTabView
-from cyangear import Cyangear
+from view_camera  import ViewCamera
+from x_cyangear import Cyangear
 
 class Messages():
     def __init__(self) -> None:
@@ -14,10 +14,10 @@ class Messages():
             self.dic = pickle.load(file)        
         return
     def display(self,object=None, subtopic=""):
-        if isinstance(object,CameraTabView):
+        if isinstance(object,ViewCamera):
             return self.cameras(object.selected)
         elif isinstance(object,Cyangear):
-            return self.cyangear(object)
+            return self.pool(object)
         else:
             search_topic    = "instance"
             search_subtopic = "general" if subtopic == "" else subtopic
@@ -50,7 +50,7 @@ class Messages():
                 if (df.loc[camera,'Bidirectionnal']) == "No":
                     message += ("\n" + self.dic['camera']['unidirectional'])
         return(message)
-    def cyangear(self,object):
+    def pool(self,object):
         message = ""
         if object.df.empty:
             message = ""
