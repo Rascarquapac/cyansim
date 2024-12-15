@@ -1,8 +1,10 @@
 import streamlit as st
 import pandas as pd
+from debug import Debug
 class ViewLens():
 	def __init__(self,pool):
-		self.pool       = pool        
+		self.pool       = pool
+		self.debug      = Debug(data=self.pool.df,mode='pool',debug_rec=False,debug_load=True)
 	def edit(self):
 		def edit_camera_lens(df,cameraLensCategory):
 			if (len(df.index) != 0): 
@@ -50,6 +52,9 @@ class ViewLens():
 					use_container_width = True,
 					)
 				return(df)
+		# self.pool.df = self.debug.load(data=self.pool.df)
+		# print("POOL SET ------------------------------------------>")
+		# print(self.pool.df)
 		blocks = {}
 		#cameraLensCategory est l'élément de sélection
 		if 'LensTypes' not in self.pool.df.columns:
@@ -68,6 +73,9 @@ class ViewLens():
 		if list(blocks.values()) != []:
 			final_df = pd.concat(list(blocks.values()))
 		self.pool.df = final_df
+		print("POOL-------------------->")
+		print(self.pool.df)
+		self.debug.record(data=self.pool.df,record=True,dump=True)
 		return final_df
     
 if __name__  == "__main__":
