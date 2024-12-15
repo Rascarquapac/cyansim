@@ -70,27 +70,27 @@ class Medium():
         match network:
             case "LAN Wired" : return current_device
             case "LAN RF Halow"    :
-                if  MaxDelayToComplete < 200:
+                if  MaxDelayToComplete > 200:
                     return CameraLensDevice.RIO_LIVE.value
                 else: 
                     return current_device
             case "LAN RF Mesh"    :
-                if  MaxDelayToComplete < 200:
+                if  MaxDelayToComplete > 200:
                     return CameraLensDevice.RIO_LIVE.value
                 else: 
                     return current_device
             case "LAN RF WiFi"    :
-                if  MaxDelayToComplete < 200:
+                if  MaxDelayToComplete > 200:
                     return CameraLensDevice.RIO_LIVE.value
                 else: 
                     return current_device
             case "P2P RF Pro Modem"    :
-                if  MaxDelayToComplete < 200:
+                if  MaxDelayToComplete > 200:
                     return CameraLensDevice.RIO_LIVE.value
                 else: 
                     return current_device
             case "P2P RF Unidir"    :
-                if  MaxDelayToComplete < 200:
+                if  MaxDelayToComplete > 200:
                     return CameraLensDevice.RIO_LIVE.value
                 else: 
                     return current_device
