@@ -70,7 +70,7 @@ class Cyangear():
             glue   = GlueTBD() 
             medium = Medium()
             rcp    = RCP_TBD()
-            self.dic[index]= (cameralens,glue,medium,rcp)
+            self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
     def adapter(self,row):
         parameters=(row['Type'],row['Brand'],row['Reference'],row['LensControlNeed'],row['LensTypeNeed'],row['LensMotorNeed'])
         accessories =CameraLens.adapter(parameters)

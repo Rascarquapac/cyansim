@@ -1,9 +1,11 @@
 import pandas as pd
 import constants as cst 
+from debug import Debug
 class Pool:
 	def __init__(self):
 		self.df = pd.DataFrame()
 		self.cameralens = PoolLens()
+		self.debug = Debug()
 	def update(self,camera_pool):
 		def columns():
 			def lensCategory(row):
@@ -15,9 +17,9 @@ class Pool:
 			def user_lensMotor(row):
 				return self.cameralens.options_needs_init[row["CameraLensCategory"]][2]
 			self.df["CameraLensCategory"] = self.df.apply(lensCategory,axis=1)
-			self.df["lensControl"]= self.df.apply(user_lensControl,axis=1)
-			self.df["lensType"]   = self.df.apply(user_lensType,axis=1)
-			self.df["lensMotor"]  = self.df.apply(user_lensMotor,axis=1)
+			self.df["lensControl"]        = self.df.apply(user_lensControl,axis=1)
+			self.df["lensType"]           = self.df.apply(user_lensType,axis=1)
+			self.df["lensMotor"]          = self.df.apply(user_lensMotor,axis=1)
 		if camera_pool.empty:
 			pass
 		else:
@@ -82,4 +84,5 @@ class PoolLens():
             case ("Minicam Motorizable") : cameraLensCategory = "Minicam Motorizable Lens"
             case _: raise KeyError(f"cameraType= {cameraType}")
         return cameraLensCategory
+	
     # Select camera cable + lens cable + lens motor from user needs in Cyanview control
