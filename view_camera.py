@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 from pprint import pprint
+from debug import Debug
 
 class ViewCamera():
     def __init__(self,descriptor):
@@ -16,6 +17,17 @@ class ViewCamera():
         self.selected    = pd.DataFrame()
         # Concat of 
         self.final       = pd.DataFrame()
+        self.debug       = Debug(data=self.df,mode='camera',debug_rec=False,debug_load=False)
+    def init_cameradf(self, init_dict):
+        # Updating camera.df will create camera.selected in self.display() 
+        print("CAMERA->INIT_SELECT->camera.selected: start ---------->:\n",self.selected)
+        if init_dict != {}:
+            print("CAMERA->INIT_SELECT: init_dict[Reference] ",init_dict.keys())
+            row_to_include = list(init_dict['Reference'].keys())
+            # Add stored values
+            for index in row_to_include:
+                self.df.loc[index,'Number']=init_dict['Number'][index]
+            print("CAMERA->INIT_SELECT camera.selected: end ---------->:\n",self.selected)
     def matching(self,camera_pattern="",brand="",camera_type=""):
         if camera_pattern != None and camera_pattern != "":
             pattern_selection = self.df.filter(like=camera_pattern,axis=0)
@@ -92,14 +104,16 @@ class ViewCamera():
                 column_order=['Number','Reference','Brand','Cable','SupportURL','ManufacturerURL'],
                 hide_index = True,
                 use_container_width = True,
-                key = "x_camera_number",
+                key = "camera_number",
     #            on_change = st.rerun,
                 )
             return(camera.step_select)
     def display_selected(self):
+        #  self.df = self.debug.load(data=self.df)
         camera = self
         # Update the camera camera Dataframe with the number of camera selected on this step
         camera.df.update(camera.step_select)
+        self.debug.record(data=self.df,record=True,dump=True)
         # Set the set of selected cameras
         camera.selected = camera.df[(camera.df['Number']>0)]
         # Trying to set properties of camera.selected for display
@@ -138,7 +152,8 @@ class ViewCamera():
                     "Type":None
                 },
                 column_order=['Number','Brand','Reference','Cable','SupportURL','ManufacturerURL'],
-                hide_index = True)
+                hide_index = True,
+                key= 'display_select')
         return(camera.selected)
 
 

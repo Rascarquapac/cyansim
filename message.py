@@ -33,8 +33,8 @@ class Messages():
         if df.empty:
             message = ""
         else:
-            print(df)
-            print(df.columns)
+            # print(df)
+            # print(df.columns)
             for camera in df.index.to_list():
                 model = camera
                 reference = df.loc[camera,'Reference']
@@ -71,7 +71,7 @@ class Messages():
             for cable_type,cable_number in object.cables.items():
                 message += f'  - {cable_type} x {cable_number}'
                 message += "\n"
-        print("CYANGEAR DATAFRAME IS NOT EMPTY … ",message)
+        # print("CYANGEAR DATAFRAME IS NOT EMPTY … ",message)
         return(message)
 
 if __name__ == "__main__":

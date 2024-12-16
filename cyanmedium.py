@@ -115,9 +115,9 @@ class Medium():
                 device = self.df.loc[index,'Device']
                 fanout = self.df.loc[index,'Fanout']
                 self.df.loc[index,'Device_id'] = devices_status.get_device_id(device,fanout)
-                print(f'usecase-->_network-->get_device_id->device_status=\n{devices_status.__dict__[device]}\n Fanout = {fanout}')
+                # print(f'usecase-->_network-->get_device_id->device_status=\n{devices_status.__dict__[device]}\n Fanout = {fanout}')
                 value = (self.df.loc[index,'LensCable'],self.df.loc[index,'MotorCable'],self.df.loc[index,'LensMotor'])
-                print(f'CABLES: {value}\n')
+                # print(f'CABLES: {value}\n')
             # camgroup_update_status(devices_status)
             devices_status.camgroup_update()
                 # print("    Device_id    : ",self.df.loc[index,'Device_id'])

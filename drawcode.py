@@ -9,7 +9,8 @@ class Mermaid():
     def code(self,cyangear):
         def objectize():
             for index in self.df.index.to_list():
-                self.obj[index] = CamLensBlock(index,self.df.loc[index])
+                self.obj[(index,'camLens')] = CamLensBlock(index,self.df.loc[index])
+#                self.obj[(index,'medium')]  = MediumBlock(index,self.df.loc[index])
         def clean(code):
             return(code.replace(' ', ''))
         def cameras():
@@ -19,9 +20,13 @@ class Mermaid():
                 camgroup_indexes  = self.df.loc[self.df['Camgroup'] == camgroup].index.tolist()
                 mermaid_code+= 'subgraph ' + camgroup + "\n"
                 for index in camgroup_indexes:
-                    mermaid_code += self.obj[index].code
+                    mermaid_code += self.obj[(index,'camLens')].code
                 mermaid_code += 'end\n'
             return mermaid_code 
+        def networks():
+            mermaid_code = ''
+            networks = self.df['Network']
+            return mermaid_code
         def switches():
             mermaid_code = ''
             switches = self.df['Switch_id'].unique() 
@@ -46,13 +51,10 @@ class Mermaid():
         objectize()
         mermaid_code = ''
         mermaid_code = 'graph RL\n'
-        ####### DRAW CAMERAS & DEVICES ##############
         mermaid_code += cameras()
-        ###### DRAW SWITCHES #######################
-        # croom = self.init_graph("Control",'sink')
+        mermaid_code += networks()
         mermaid_code += 'subgraph "Control Room" \n'
         mermaid_code += switches()
-        ####### DRAW RCPS ########################
         mermaid_code += rcps()
         mermaid_code += 'end\n'
         code = ':::mermaid\n' + mermaid_code  + '\n:::\n' 

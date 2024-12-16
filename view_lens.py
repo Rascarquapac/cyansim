@@ -4,7 +4,7 @@ from debug import Debug
 class ViewLens():
 	def __init__(self,pool):
 		self.pool       = pool
-		self.debug      = Debug(data=self.pool.df,mode='pool',debug_rec=False,debug_load=True)
+		self.debug      = Debug(data=self.pool.df,mode='pool',debug_rec=False,debug_load=False)
 	def edit(self):
 		def edit_camera_lens(df,cameraLensCategory):
 			if (len(df.index) != 0): 
@@ -69,12 +69,12 @@ class ViewLens():
 				st.markdown(cameraLensCategory)
 				#??? NO USE?? constraints = Lens.filter_constraints(cameraLensCategory)
 				blocks[cameraLensCategory] = edit_camera_lens(selected_rows,cameraLensCategory)
-		print("blocks.values:",list(blocks.values()))
+		# print("blocks.values:",list(blocks.values()))
 		if list(blocks.values()) != []:
 			final_df = pd.concat(list(blocks.values()))
 		self.pool.df = final_df
-		print("POOL-------------------->")
-		print(self.pool.df)
+		# print("POOL-------------------->")
+		# print(self.pool.df)
 		self.debug.record(data=self.pool.df,record=True,dump=True)
 		return final_df
     

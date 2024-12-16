@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import json as json
 from pprint   import pprint
 from load import Descriptor
 from pool import Pool
@@ -17,6 +18,7 @@ def ui_init():
     st.session_state.descriptor = Descriptor(update=True)
     st.session_state.camera   = ViewCamera(st.session_state.descriptor)
     st.session_state.pool     = Pool()
+    st.session_state.pool.init_case()
     st.session_state.network  = ViewNetwork(st.session_state.pool)
     st.session_state.lens     = ViewLens(st.session_state.pool)
     st.session_state.cyangear = Cyangear(st.session_state.pool)
@@ -26,6 +28,7 @@ def ui_init():
     # Initiate drawings
     st.session_state.analyze_done = False
 
+     
 # User Interface initialisation
 if 'running' not in st.session_state:
     ui_init()
@@ -92,3 +95,4 @@ with mermaid:
         # MERMAID RENDERING
         html = st.session_state.draw.mermaidize(st.session_state.cyangear)
         st.write(html, unsafe_allow_html=True)
+st.session_state.pool.save_case()

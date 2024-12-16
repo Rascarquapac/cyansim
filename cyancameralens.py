@@ -8,7 +8,7 @@ class CameraLens():
     @classmethod
     def adapter(self,parameters):
         def check(parameters):
-            print("Lens->lens_cable->check->PARAMETERS:\n",parameters)
+            # print("Lens->lens_cable->check->PARAMETERS:\n",parameters)
             (cameraType,cameraBrand,cameraModel,lensControl,lensType,lensMotor) = parameters
             ## DUPLICATE !!!!
             if cameraType not in ["BBlock","CineStyle","Handheld Camcorder","Minicam","Minicam Motorizable","Minicam IZT","Mirrorless","PTZ","Shoulder Camcorder","Slow Motion","System","TBD"]:

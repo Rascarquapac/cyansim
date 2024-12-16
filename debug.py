@@ -15,7 +15,7 @@ class Debug():
 		elif data == None:
 			data = self.data
 		if record: 
-			filename = f"./debug/dbgimport_{self.mode}.pkl"
+			filename = f"./debug/dbg_{self.mode}_import.pkl"
 			if isinstance(data,dict):
 				with open(filename, 'wb') as file:
 					pickle.dump(data, file)
@@ -24,7 +24,7 @@ class Debug():
 			else:
 				raise Exception
 		if dump:
-			filename = f"./debug/dbgexport_{self.mode}.csv"
+			filename = f"./debug/dbg_{self.mode}_export.csv"
 			if isinstance(data,pd.DataFrame):
 				data.to_csv(filename)
 			else:
@@ -38,7 +38,7 @@ class Debug():
 				data = self.data
 		elif data == None:
 			data = self.data
-		filename = f"./debug/dbgimport_{self.mode}.pkl"
+		filename = f"./debug/dbg_{self.mode}_import.pkl"
 		if isinstance(data,dict):
 			with open(filename, 'rb') as file:
 				data = pickle.load(file)

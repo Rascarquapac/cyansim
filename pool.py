@@ -1,3 +1,5 @@
+import streamlit as st
+import json 
 import pandas as pd
 import constants as cst 
 from debug import Debug
@@ -6,6 +8,7 @@ class Pool:
 		self.df = pd.DataFrame()
 		self.cameralens = PoolLens()
 		self.debug = Debug()
+		self.initcase_dict = {}
 	def update(self,camera_pool):
 		def columns():
 			def lensCategory(row):
@@ -25,6 +28,45 @@ class Pool:
 		else:
 			self.df = camera_pool
 			columns()
+	def save_case(self):
+		print("POOL.SAVE_CASE: POOL.DF before creating initcase_dict... --------------->\n",self.df)
+		if not self.df.empty:
+			self.initcase_dict = self.df[['Reference','Number','Network','lensControl','lensType','lensMotor']].to_dict()
+			print("POOL.SAVE_CASE: INITCASE_DICT;\n",self.initcase_dict["Reference"])
+			# Write dictionary to a JSON file 
+			with open('initcase.json', 'w') as json_file: 
+				json.dump(self.initcase_dict, json_file)
+		print("POOL.SAVE_CASE: end, self.initcase_dict -->\n",self.initcase_dict)
+
+	def init_case(self):
+		print("POOL->INIT_CASE: start")
+		try:
+			print("POOL->INIT°CASE: initlaisizing seld.initcase_dict with JSON file")
+			with open('initcase.json', 'r') as json_file: 
+				self.initcase_dict = json.load(json_file) 
+		except:
+			print("File initcase.json does not exist")
+			self.initcase_dict = {}
+		st.session_state.camera.init_cameradf(self.initcase_dict)
+		st.session_state.pool.init_pooldf(st.session_state.camera.df)
+		print("POOL->INIT_CASE: End")
+
+	def init_pooldf(self,camera_selected):
+		print("POOL->INIT_POOL->start: CAMERA_DF---------->:\n",self.df)
+		self.update(camera_selected)
+		if self.initcase_dict == {}:
+			row_to_include = []
+		else:	
+			row_to_include = list(self.initcase_dict['Reference'].keys())
+		for index in row_to_include:
+			self.df.loc[index,'Reference']  = self.initcase_dict['Reference'][index]
+			self.df.loc[index,'Number']     = self.initcase_dict['Number'][index]
+			self.df.loc[index,'Network']    = self.initcase_dict['Network'][index]
+			self.df.loc[index,'lensControl']= self.initcase_dict['lensControl'][index]
+			self.df.loc[index,'lensType']   = self.initcase_dict['lensType'][index]
+			self.df.loc[index,'lensMotor']  = self.initcase_dict['lensMotor'][index]
+		print("POOL->INIT_POOL->: end POOL.DF---------->:\n",self.df)
+
 class PoolLens():
     # def __init__(self,df_index,reference,protocol,cable) -> None:
     def __init__(self) -> None:
