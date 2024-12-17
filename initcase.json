@@ -1,1 +1,44 @@
-{"Reference": {"CV225": "MarshallCV225", "CV226": "MarshallCV226", "PMW-EX3": "PMW-EX3", "PXW-200": "PXW-X200"}, "Number": {"CV225": 1, "CV226": 2, "PMW-EX3": 3, "PXW-200": 1}, "Network": {"CV225": "LAN RF Halow", "CV226": "LAN RF Halow", "PMW-EX3": "LAN RF Halow", "PXW-200": "LAN RF Halow"}, "lensControl": {"CV225": "No Need", "CV226": "No Need", "PMW-EX3": "No Need", "PXW-200": "No Need"}, "lensType": {"CV225": "Manual", "CV226": "Manual", "PMW-EX3": "B4-Mount", "PXW-200": "Manual"}, "lensMotor": {"CV225": "No extra motors", "CV226": "No extra motors", "PMW-EX3": "No extra motors", "PXW-200": "No extra motors"}}
+{
+    "Reference": {
+        "AtomOne": "AtomOne",
+        "AtomOne mini": "AtomOne mini",
+        "Alpha": "Alpha SonyMirrorless",
+        "Alpha 7 CR": "ILCE-7CR",
+        "PMW-EX3": "PMW-EX3"
+    },
+    "Number": {
+        "AtomOne": 3,
+        "AtomOne mini": 2,
+        "Alpha": 2,
+        "Alpha 7 CR": 2,
+        "PMW-EX3": 1
+    },
+    "Network": {
+        "AtomOne": "LAN Wired",
+        "AtomOne mini": "LAN Wired",
+        "Alpha": "LAN RF Halow",
+        "Alpha 7 CR": "LAN RF Halow",
+        "PMW-EX3": "LAN RF Halow"
+    },
+    "lensControl": {
+        "AtomOne": "No Need",
+        "AtomOne mini": "No Need",
+        "Alpha": "No Need",
+        "Alpha 7 CR": "No Need",
+        "PMW-EX3": "No Need"
+    },
+    "lensType": {
+        "AtomOne": "Manual",
+        "AtomOne mini": "Manual",
+        "Alpha": "TBD",
+        "Alpha 7 CR": "TBD",
+        "PMW-EX3": "B4-Mount"
+    },
+    "lensMotor": {
+        "AtomOne": "No extra motors",
+        "AtomOne mini": "No extra motors",
+        "Alpha": "TBD",
+        "Alpha 7 CR": "TBD",
+        "PMW-EX3": "No extra motors"
+    }
+}

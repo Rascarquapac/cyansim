@@ -61,3 +61,4 @@ class Mermaid():
         with open('./debug/mermaid_code_obj.md', 'w') as f:
             f.write(code)
         return(mermaid_code)
+    
