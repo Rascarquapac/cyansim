@@ -18,19 +18,13 @@ class ViewCamera():
         # Concat of 
         self.final       = pd.DataFrame()
         self.debug       = Debug(data=self.df,mode='camera',debug_rec=False,debug_load=False)
-    def init_cameradf(self, init_dict):
-        # Updating camera.df will create camera.selected in self.display() 
-        print("CAMERA->INIT_SELECT->camera.selected: start ---------->:\n",self.selected)
-        if init_dict != {}:
-            print("CAMERA->INIT_SELECT: init_dict[Reference] ",init_dict.keys())
-            row_to_include = list(init_dict['Reference'].keys())
-            # Add stored values
-            for index in row_to_include:
-                self.df.loc[index,'Number']=init_dict['Number'][index]
-            print("CAMERA->INIT_SELECT camera.selected: end ---------->:\n",self.selected)
     def matching(self,camera_pattern="",brand="",camera_type=""):
         if camera_pattern != None and camera_pattern != "":
-            pattern_selection = self.df.filter(like=camera_pattern,axis=0)
+            # pattern_selection = self.df.filter(like=camera_pattern,axis=0)
+            print(self.df.columns)
+            pattern_selection = self.df[self.df[['Name','Reference']].apply(
+                lambda row: row.astype(str).str.contains(camera_pattern, case=False).any(), 
+                axis=1)]
         else:
             pattern_selection = self.df
         if brand != None and brand != "":

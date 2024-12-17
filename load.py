@@ -17,6 +17,7 @@ class Descriptor():
                 "Protocol","Brand","Type","Cable","SupportURL","Message","MaxDelayToComplete","ControlCoverage","Bidirectionnal"])
             # PROFILE THE CAMERA POOL
             del proto_df['Brand']
+            cam_df['Name'] = cam_df['Model']
             # LEFT JOIN FOR COMBINING CAMERAS AND PROTOCOLS DATA
             camera_df = pd.merge(cam_df, proto_df, on = ['Protocol'],how = 'left').set_index('Model')
             camera_df['Number'] = 0
