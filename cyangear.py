@@ -238,6 +238,7 @@ class Cyangear():
         self.rcp_count()
         self.cable_count()
         self.device_count()
+        self.df.to_csv("./debug/cyangear_df.csv")
         # if global_debug_usecase_record: debug_usecase_to_csv(self.df,global_debug_prefix)
         # print('########## RCPs :',self.rcps)
         # print('########## DEVICES :',self.devices)
