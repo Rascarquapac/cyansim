@@ -32,9 +32,11 @@ class Mermaid():
             switches = self.df['Switch_id'].unique() 
             for switch in switches:
                 switch_df  = self.df.loc[self.df['Switch_id'] == switch]
+                # We suppose one type of network per camera_type … routing should be reviewed
+                network = switch_df['Network'].iloc[0]
                 device_ids = switch_df['Device_id'].unique()
                 for device_id in device_ids:
-                    mermaid_code += clean(device_id) + ' --- |Ethernet|' + clean(switch) + '\n'
+                    mermaid_code += clean(device_id) + ' --- |'+ network + '|' + clean(switch) + '\n'
             return mermaid_code
         def rcps():
             mermaid_code = ''
