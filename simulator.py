@@ -9,24 +9,34 @@ from view_sidebar  import Sidebar
 from view_camera   import ViewCamera
 from view_network  import ViewNetwork
 from view_lens     import ViewLens
-from cyangear import Cyangear
+from gear     import Cyangear
 from message  import Messages
 from draw     import Draw
 
 def ui_init():
-    # Define first state
-    st.session_state.running = True
-    st.session_state.descriptor = Descriptor(update=True)
-    st.session_state.camera   = ViewCamera(st.session_state.descriptor)
-    st.session_state.pool     = Pool()
-    st.session_state.case     = Case(camera=st.session_state.camera,pool= st.session_state.pool,active=True)
-    st.session_state.network  = ViewNetwork(st.session_state.pool)
-    st.session_state.lens     = ViewLens(st.session_state.pool)
-    st.session_state.cyangear = Cyangear(st.session_state.pool)
+    # case file for initiating simulator
+    casefile = "initcase.json"
+    # Load objects once
+    descriptor = Descriptor(update=True)
+    camera     = ViewCamera(descriptor)
+    pool       = Pool()
+    case       = Case(camera=camera,pool=pool,active=True,filename=casefile)
+    network    = ViewNetwork(pool)
+    lens       = ViewLens(pool)
+    cyangear   = Cyangear(pool)
+    # set running toggle avoiding multiple intialisations
+    st.session_state.running    = True
+    # Define session_state objects
+    st.session_state.camera   = camera
+    st.session_state.pool     = pool
+    st.session_state.case     = case
+    st.session_state.network  = network
+    st.session_state.lens     = lens
+    st.session_state.cyangear = cyangear
     st.session_state.messages = Messages()
     st.session_state.sidebar  = Sidebar()
     st.session_state.draw     = Draw()
-    # Initiate drawings
+    # 
     st.session_state.analyze_done = False
 
      
