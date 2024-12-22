@@ -1,7 +1,8 @@
 import json
-
+# 
 class Case():
-	def __init__(self,camera=None,pool=None,active=False):
+	def __init__(self,camera=None,pool=None,active=False,filename="initcase.json"):
+		self.filename = filename
 		self.pool   = pool
 		self.camera = camera
 		self.active = active
@@ -38,10 +39,10 @@ class Case():
 			return
 		try:
 			print("POOL->INIT_CASE: initlaisizing seld.initcase_dict with JSON file")
-			with open('initcase.json', 'r') as json_file: 
+			with open(self.filename, 'r') as json_file: 
 				self.initcase_dict = json.load(json_file) 
 		except:
-			print("File initcase.json does not exist")
+			print(f"File {self.filename} describing init case does not exist")
 			self.initcase_dict = {}
 		if self.initcase_dict == {} : return
 		init_camera_df()
@@ -55,6 +56,6 @@ class Case():
 				self.initcase_dict = self.pool.df[['Reference','Number','Network','lensControl','lensType','lensMotor']].to_dict()
 				print("POOL.SAVE_CASE: INITCASE_DICT;\n",self.initcase_dict["Reference"])
 				# Write dictionary to a JSON file 
-				with open('initcase.json', 'w') as json_file: 
+				with open(self.filename, 'w') as json_file: 
 					json.dump(self.initcase_dict, json_file,indent=4)
 			print("POOL.SAVE_CASE: end, self.initcase_dict -->\n",self.initcase_dict)
