@@ -2,7 +2,7 @@ import base64
 import mermaid as md
 import pandas as pd
 from mermaid.graph  import Graph
-from drawcode import Mermaid
+from draw_mermaid import Mermaid
 #################### DRAW WITH MERMAID ###########################
 class Draw():
     def __init__(self) -> None:
