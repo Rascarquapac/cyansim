@@ -35,3 +35,24 @@ class Descriptor():
             except:
                 cameras_df = gsheet()
         return(cameras_df)
+if __name__ == "__main__":
+    descriptor = Descriptor()
+    # Summary of the DataFrame 
+    print("\nInfo summary:") 
+    descriptor.df.info() 
+    # Display the first few rows 
+    head_summary = descriptor.df.head() 
+    print("\nFirst few rows of the DataFrame:") 
+    print(head_summary) 
+    # Display the last few rows
+    tail_summary = descriptor.df.tail() 
+    print("\nLast few rows of the DataFrame:") 
+    print(tail_summary) 
+    # Shape of the DataFrame 
+    shape_summary = descriptor.df.shape 
+    print("\nShape of the DataFrame:") 
+    print(shape_summary) 
+    # Column names of the DataFrame 
+    columns_summary = descriptor.df.columns 
+    print("\nColumn names of the DataFrame:") 
+    print(columns_summary)
