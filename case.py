@@ -1,5 +1,5 @@
 import json
-# 
+import os 
 class Case():
 	def __init__(self,camera=None,pool=None,active=False,filename="initcase.json"):
 		self.filename = filename
@@ -7,7 +7,7 @@ class Case():
 		self.camera = camera
 		self.active = active
 		self.initcase_dict = {}
-		if active : self.init_case()
+		if active and os.path.exists(filename) : self.init_case()
 	def init_case(self):
 		def init_camera_df():
 			# Updating camera.df will create camera.selected in self.display() 
