@@ -14,7 +14,7 @@ class Cyangear():
         self.cables  = {}
         self.devices = {}
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
-    def instances_df(self):
+    def create_gear_df(self):
         # Create a dictionnary from the Pool dataframe with 
         #     key = instance name based on Pool dataframe index
         #     data = dataframe row retlated to the index as a list
@@ -66,9 +66,9 @@ class Cyangear():
             df_row = self.df.loc[index]
             # cameralens = CameraLens(index,df_row["Reference"],df_row["Protocol"],df_row["Cable"])
             cameralens = CameraLens()
-            glue   = GlueTBD() 
-            medium = Medium()
-            rcp    = RCP_TBD()
+            glue       = GlueTBD() 
+            medium     = Medium()
+            rcp        = RCP_TBD()
             self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
     def adapter(self,row):
         parameters=(row['Type'],row['Brand'],row['Reference'],row['LensControlNeed'],row['LensTypeNeed'],row['LensMotorNeed'])
@@ -190,33 +190,42 @@ class Cyangear():
             for index in rcp_indexes:
                 (RCPtype, RCP_id)=get_rcptype_rcp_id(rcp_id,occurences)
                 self.df.loc[index,'RCP_id'] = RCP_id 
-                #??self.df.loc[index,'RCPtype'] = RCPtype 
-    def rcp_count(self):
-        rcp_ids = self.df['RCP_id'].unique()
-        for rcp_id in rcp_ids:
-            rcp_index  = self.df.loc[self.df['RCP_id'] == rcp_id].index.tolist()[0]
-            rcp_type   = self.df.loc[rcp_index,'RCPtype']
-            if rcp_type not in self.rcps: 
-                self.rcps[rcp_type] = 1
-            else:
-                self.rcps[rcp_type] += 1
-    # Count Cables for quoting
-    def cable_count(self):
-        cable_types = self.df['Cable'].unique()
-        for cable_type in cable_types:
-            self.cables[cable_type] = self.df['Cable'].tolist().count(cable_type)
-    # Count devices for quoting
-    def device_count(self):
-        device_ids = self.df['Device_id'].unique()
-        for device_id in device_ids:
-            device_index  = self.df.loc[self.df['Device_id'] == device_id].index.tolist()[0]
-            device_type   = self.df.loc[device_index,'Device']
-            if device_type not in self.devices: 
-                self.devices[device_type] = 1
-            else:
-                self.devices[device_type] += 1
+                self.df.loc[index,'RCPtype'] = RCPtype 
+    def count(self):
+        def rcp_count(gear_df):
+            rcp_ids = gear_df['RCP_id'].unique()
+            rcps = {}
+            for rcp_id in rcp_ids:
+                rcp_index  = gear_df.loc[gear_df['RCP_id'] == rcp_id].index.tolist()[0]
+                rcp_type   = gear_df.loc[rcp_index,'RCPtype']
+                if rcp_type not in rcps: 
+                    rcps[rcp_type] = 1
+                else:
+                    rcps[rcp_type] += 1
+            return rcps
+        def cable_count(gear_df):
+            cable_types = gear_df['Cable'].unique()
+            cables = {}
+            for cable_type in cable_types:
+                cables[cable_type] = gear_df['Cable'].tolist().count(cable_type)
+            return cables
+        def device_count(gear_df):
+            device_ids = self.df['Device_id'].unique()
+            devices = {}
+            for device_id in device_ids:
+                device_index  = gear_df.loc[gear_df['Device_id'] == device_id].index.tolist()[0]
+                device_type   = gear_df.loc[device_index,'Device']
+                if device_type not in devices: 
+                    devices[device_type] = 1
+                else:
+                    devices[device_type] += 1
+            return devices
+        self.rcps    = rcp_count(self.df)
+        self.cables  = cable_count(self.df)
+        self.devices = device_count(self.df)
+
     def analyze(self):
-        self.instances_df()
+        self.create_gear_df()
         self.set_objects_dic()
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
@@ -234,9 +243,7 @@ class Cyangear():
         # Compute device_id from running through camgroups not through dataframe index
         self.rcp_id_from_camgroup()
         self.rcp_optimize()
-        self.rcp_count()
-        self.cable_count()
-        self.device_count()
+        self.count()
         self.df.to_csv("./debug/cyangear_df.csv")
         # if global_debug_usecase_record: debug_usecase_to_csv(self.df,global_debug_prefix)
         # print('########## RCPs :',self.rcps)
