@@ -1,5 +1,5 @@
 import pandas as pd
-from gear_lens import CamLensBlock
+from gear_lens import CameraLensGraph
 #################### DRAW WITH MERMAID ###########################
 class Mermaid():
     def __init__(self) -> None:
@@ -9,7 +9,7 @@ class Mermaid():
     def code(self,cyangear):
         def objectize():
             for index in self.df.index.to_list():
-                self.obj[(index,'camLens')] = CamLensBlock(index,self.df.loc[index])
+                self.obj[(index,'camLens')] = CameraLensGraph(index,self.df.loc[index])
 #                self.obj[(index,'medium')]  = MediumBlock(index,self.df.loc[index])
         def clean(code):
             return(code.replace(' ', ''))
