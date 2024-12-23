@@ -3,6 +3,51 @@ import constants as cst
 from constants import CameraCategories as CC
 # Should be part of cyangear Constants object
 class CameraLens():
+    def __init__(self) -> None:
+        self.camera_types = [member.value for member in cst.CameraType]
+        self.camera_types = ["BBlock","CineStyle","Handheld Camcorder","Minicam","Minicam Motorizable","Minicam IZT","Mirrorless","PTZ","Shoulder Camcorder","Slow Motion","System","TBD"]
+        self.camera_categories = ['Broadcast','Cine Interchangeable','IZF Integrated','Fixed Lens','Minicam Motorizable Lens','TBD' ]
+        # User options of IZF control per camera category
+        self.options_needs_lensControl={
+             'Broadcast':['No Need','Iris','IZF'],
+             'Cine Interchangeable':['No Need','Iris','IZF'],
+             'IZF Integrated':['IZF'],
+             'Fixed Lens':['No Need'],
+             'Minicam Motorizable Lens':['No Need','IZF'],
+             'TBD' :["No Need"]
+        }
+        # User options of lens type per camera category
+        self.options_needs_lensType={
+             'Broadcast':['B4-Mount'],
+             'Cine Interchangeable':['B4-Mount','E-Mount','Cabrio','Cineservo','Primelens','Motorized Others','TBD'],
+             'IZF Integrated':['Camera Integrated'],
+             'Fixed Lens':['Manual'], # "Manual" only ?
+             'Minicam Motorizable Lens':['Manual'],
+             'TBD' :["No Need"]
+        }
+        # User options of motor type per camera category
+        self.options_needs_motorType={
+             'Broadcast':['No extra motors'],
+             'Cine Interchangeable':['No extra motors','Tilta','Arri','TBD'],
+             'IZF Integrated':['Camera Integrated'],
+             'Fixed Lens':['Manual'], # "Manual" only ?
+             'Minicam Motorizable Lens':['No extra motors','Dreamchip'],
+             'TBD' :['No extra motors']
+        }
+        # Initial values for user options per camera category (lensControl,lensType,motorType)
+        self.options_needs_init = {
+            "Broadcast" : ('No Need','B4-Mount','No extra motors'),
+            "Cine Interchangeable" : ('No Need','TBD','TBD'),
+            "IZF Integrated" : ('IZF','Camera Integrated','No extra motors'),
+            "Fixed Lens" : ("No Need",'Manual','No extra motors'),
+            'Minicam Motorizable Lens' : ("No Need",'Manual','No extra motors'),
+            "TBD" : ("No Need",'Manual','No extra motors')
+        }
+                # case "Broadcast": return ('No Need','B4-Mount','No extra motors')
+                # case "Cine Interchangeable": return ('No Need','TBD','TBD')
+                # case "IZF Integrated": return ('IZF','Camera Integrated','No extra motors')
+                # case "Fixed Lens": return ("No Need",'Fixed and Manual','No extra motors')
+                # case "TBD": return ("No Need",'Fixed and Manual','No extra motors')    
     # Select camera cable + lens cable + lens motor from user needs in Cyanview control
     @classmethod
     def adapter(self,parameters):
@@ -27,7 +72,7 @@ class CameraLens():
         (no_cable,cable_B4,cable_tilta,cable_fuji,cable_arri) = ("No cable","CY-CBL-6P-B4-02","CY-CBL-6P-TILTA-SERIAL","CY-CBL-6P-FUJI-02","ARRI CForce cable")
         (no_motor,motor_arri,motor_tilta,motor_dreamchip) = ("No motor","Arri","Tilta","Dreamchip")
         # Set cameraLensCategory
-        cameraLensCategory = PoolLens.cameraLens_category(cameraType)
+        cameraLensCategory = self.cameraLens_category(cameraType)
         # Set cables and motors
         # print("\n_lens->lens_cable_selext->PARAMETERS: ",parameters)
         # print("\n_lens->lens_cable_selext->MATCH INPUT: ",(cameraLensCategory,cameraBrand,cameraModel,lensControl,lensType,lensMotor) )
@@ -89,25 +134,38 @@ class CameraLens():
     ########## FLAT ANALYZIS
         self.camera_type='TBD' 
         self.camera_category='TBD' 
-class CamLensBlock():
-    def __init__(self,index,serie) -> None:
+    @classmethod
+    def cameraLens_category(self,cameraType):
+        # cameraMount can be suppressed except for exception
+        match (cameraType):
+            case ("TBD") : cameraLensCategory = "TBD"
+            case ("Slow Motion") | ("System")|("BBlock")|("Shoulder Camcorder") : cameraLensCategory = "Broadcast"
+            case ("CineStyle")|("Mirrorless")       : cameraLensCategory = "Cine Interchangeable"
+            case ("PTZ") | ("Handheld Camcorder")|("Minicam IZT")   : cameraLensCategory = "IZF Integrated"
+            case ("Minicam")    : cameraLensCategory = "Fixed Lens"
+            case ("Minicam Motorizable") : cameraLensCategory = "Minicam Motorizable Lens"
+            case _: raise KeyError(f"cameraType= {cameraType}")
+        return cameraLensCategory
+
+class CameraLensGraph():
+    def __init__(self,index,row) -> None:
         #convert columns into attributes
         self.df_index  = index
-        self.reference = serie['Reference']
-        self.protocol  = serie['Protocol']
-        self.camera_id = serie['Camera_id'] 
-        self.device_id = serie['Device_id'] 
-        self.cable     = serie['Cable']
-        self.device    = serie['Device']
+        self.reference = row['Reference']
+        self.protocol  = row['Protocol']
+        self.camera_id = row['Camera_id'] 
+        self.device_id = row['Device_id'] 
+        self.cable     = row['Cable']
+        self.device    = row['Device']
         #lensControl,lensType,lensMotor
-        self.lensControl = serie['lensControl']
-        self.lensType    = serie['lensType']
-        self.lensMotor   = serie['lensMotor']
+        self.lensControl = row['lensControl']
+        self.lensType    = row['lensType']
+        self.lensMotor   = row['lensMotor']
         #LensCable,MotorCable,LensMotor
-        self.llensCable  = serie['LensCable']
-        self.lmotorCable = serie['MotorCable']
-        self.llensMotor  = serie['LensMotor']
-        self.camLensCat  = serie['CameraLensCategory']
+        self.llensCable  = row['LensCable']
+        self.lmotorCable = row['MotorCable']
+        self.llensMotor  = row['LensMotor']
+        self.camLensCat  = row['CameraLensCategory']
         self.code = ''
         self.mermaid()
     def mermaid(self):
@@ -121,17 +179,22 @@ class CamLensBlock():
         lens_id = f'{lens_type}_{camera_id}'
         # print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x\n")
         # print(f'Camera Lens Category: {self.camLensCat} IZF_INTEGRATED.name: {CC.IZF_INTEGRATED.value}')
+        self.code += f"%% CameraCategory:{self.camLensCat}, LensControl:{self.lensControl}, LensType:{self.lensType}\n"
         match (self.camLensCat,self.lensControl,self.lensType):
-            case (CC.IZF_INTEGRATED.value,lensControl,lensType):
-                self.code += lens_id   + '([' + lens_type   + '])<-->'+camera_id+'\n'
-                self.code += camera_id + '[' + camera_name + ']<-->|'+ cable +'|'+ device_id +'\n'
+            case (CC.IZF_INTEGRATED.value,lensControl,lensType):                        
+                self.code += f"%%DBG: CC.IZF_INTEGRATED branch\n"
+                self.code += lens_id   + '[[' + lens_type   + ']]<-->'+camera_id+'\n'
+                self.code += camera_id + '['  + camera_name + ']<-->|'+ cable +'|'+ device_id +'\n'
             case (CC.FIXED_LENS.value,lensControl,lensType):
+                self.code += f"%%DBG: CC.FIXED_LENS branch\n"
                 self.code += camera_id + '{{"' + camera_name + '"}}<-->|'+ cable +'|'+ device_id +'\n'
             case _:
+                self.code += f"%%DBG: NOT (CC.FIXED_LENS, CC.IZF_INTEGRATED) branch\n"
+                self.code += lens_id   + '[[' + lens_type   + ']]<-->'+camera_id+'\n'
                 self.code += camera_id + '{{"' + camera_id + ' fa:fa-camera-retro"}}---|'+cable +'|'+device_id+'\n'
                 # Add to mermaid code LR edge from lens to Cyanglue
                 if self.lensType != 'TBD' and self.llensCable != 'No cable' :
-                    self.code += f'{self.lens_id}([{self.lensType}])---|{clean(self.llensCable)}|{clean(self.device_id)}\n'
+                    self.code += f'{lens_id}([{self.lensType}])---|{clean(self.llensCable)}|{clean(self.device_id)}\n'
                 # Create subgraph parameters for camera + lens
                 self.subgraph_id   = f'{clean(self.camera_id)}_cameralens'
                 if self.lensControl == 'No Need':
@@ -146,66 +209,7 @@ class CamLensBlock():
                 self.code += f'  subgraph {self.subgraph_id} [{self.subgraph_title}]\n'
                 self.code += f'    {camera_id}\n'
                 if self.lensType != 'TBD' and self.llensCable != 'No Cable' :
-                    self.code += f'    {lens_id}\n'
+                    self.code += f'    {lens_id}[[{lens_type}]]\n'
+                else:
+                    self.code += f'    {lens_id}[[{lens_type}]]\n'
                 self.code += '  end\n'
-class PoolLens():
-    # def __init__(self,df_index,reference,protocol,cable) -> None:
-    def __init__(self) -> None:
-        self.camera_types = [member.value for member in cst.CameraType]
-        self.camera_types = ["BBlock","CineStyle","Handheld Camcorder","Minicam","Minicam Motorizable","Minicam IZT","Mirrorless","PTZ","Shoulder Camcorder","Slow Motion","System","TBD"]
-        self.camera_categories = ['Broadcast','Cine Interchangeable','IZF Integrated','Fixed Lens','Minicam Motorizable Lens','TBD' ]
-        # User options of IZF control per camera category
-        self.options_needs_lensControl={
-             'Broadcast':['No Need','Iris','IZF'],
-             'Cine Interchangeable':['No Need','Iris','IZF'],
-             'IZF Integrated':['IZF'],
-             'Fixed Lens':['No Need'],
-             'Minicam Motorizable Lens':['No Need','IZF'],
-             'TBD' :["No Need"]
-        }
-        # User options of lens type per camera category
-        self.options_needs_lensType={
-             'Broadcast':['B4-Mount'],
-             'Cine Interchangeable':['B4-Mount','E-Mount','Cabrio','Cineservo','Primelens','Motorized Others','TBD'],
-             'IZF Integrated':['Camera Integrated'],
-             'Fixed Lens':['Manual'], # "Manual" only ?
-             'Minicam Motorizable Lens':['Manual'],
-             'TBD' :["No Need"]
-        }
-        # User options of motor type per camera category
-        self.options_needs_motorType={
-             'Broadcast':['No extra motors'],
-             'Cine Interchangeable':['No extra motors','Tilta','Arri','TBD'],
-             'IZF Integrated':['Camera Integrated'],
-             'Fixed Lens':['Manual'], # "Manual" only ?
-             'Minicam Motorizable Lens':['No extra motors','Dreamchip'],
-             'TBD' :['No extra motors']
-        }
-        # Initial values for user options per camera category (lensControl,lensType,motorType)
-        self.options_needs_init = {
-            "Broadcast" : ('No Need','B4-Mount','No extra motors'),
-            "Cine Interchangeable" : ('No Need','TBD','TBD'),
-            "IZF Integrated" : ('IZF','Camera Integrated','No extra motors'),
-            "Fixed Lens" : ("No Need",'Manual','No extra motors'),
-            'Minicam Motorizable Lens' : ("No Need",'Manual','No extra motors'),
-            "TBD" : ("No Need",'Manual','No extra motors')
-        }
-                # case "Broadcast": return ('No Need','B4-Mount','No extra motors')
-                # case "Cine Interchangeable": return ('No Need','TBD','TBD')
-                # case "IZF Integrated": return ('IZF','Camera Integrated','No extra motors')
-                # case "Fixed Lens": return ("No Need",'Fixed and Manual','No extra motors')
-                # case "TBD": return ("No Need",'Fixed and Manual','No extra motors')
-    @classmethod
-    def cameraLens_category(self,cameraType):
-        # cameraMount can be suppressed except for exception
-        match (cameraType):
-            case ("TBD") : cameraLensCategory = "TBD"
-            case ("Slow Motion") | ("System")|("BBlock")|("Shoulder Camcorder") : cameraLensCategory = "Broadcast"
-            case ("CineStyle")|("Mirrorless")       : cameraLensCategory = "Cine Interchangeable"
-            case ("PTZ") | ("Handheld Camcorder")|("Minicam IZT")   : cameraLensCategory = "IZF Integrated"
-            case ("Minicam")    : cameraLensCategory = "Fixed Lens"
-            case ("Minicam Motorizable") : cameraLensCategory = "Minicam Motorizable Lens"
-            case _: raise KeyError(f"cameraType= {cameraType}")
-        return cameraLensCategory
-	
-    # Select camera cable + lens cable + lens motor from user needs in Cyanview control
