@@ -7,7 +7,7 @@ class DevicesStatus():
         self.rio      = {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO"}
         self.rio_live = {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO-LIVE"}
         self.rsbm     = {'current_instance':0,'consumed_connections':0,'max_connections':8  ,'instanciated':False,'name':"RSBM"}
-        self.ip       = {'current_instance':0,'consumed_connections':0,'max_connections':100,'instanciated':False,'name':"IP"}
+        self.ip       = {'current_instance':0,'consumed_connections':0,'max_connections':100,'instanciated':False,'name':"IP-SWITCH"}
         # update devices status when changing camgroup
     def camgroup_update(self):
         for attribute, status in vars(self).items():
