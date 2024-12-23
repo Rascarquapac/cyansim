@@ -6,7 +6,7 @@ from pprint import pprint
 class Descriptor():
     def __init__(self,update=True,debug=False):
         self.df  = self.load(update)
-        self.pickel_filename = "./picklized/x_cameras.pkl"
+        self.pickel_filename = "./picklized/cameras.pkl"
     def load(self,update):
         def gsheet():
             conn = st.connection("cameras", type=GSheetsConnection)
@@ -23,7 +23,7 @@ class Descriptor():
             camera_df['Number'] = 0
             camera_df['Selected'] = False
             camera_df['Network'] = 'LAN Wired'
-            camera_df.to_pickle("./picklized/x_cameras.pkl")
+            camera_df.to_pickle("./picklized/cameras.pkl")
             return camera_df
         def pickel_file():
             return pd.read_pickle(self.pickel_filename)
