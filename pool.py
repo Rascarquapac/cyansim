@@ -1,12 +1,12 @@
 import streamlit as st
 import json 
 import pandas as pd
-from gear_lens import PoolLens
+from gear_lens import CameraLens
 from debug import Debug
 class Pool:
 	def __init__(self):
 		self.df = pd.DataFrame()
-		self.cameralens = PoolLens()
+		self.cameralens = CameraLens()
 		self.debug = Debug()
 		self.initcase_dict = {}
 	def update(self,camera_pool):
