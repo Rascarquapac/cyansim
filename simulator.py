@@ -83,7 +83,7 @@ with cameraSelection :
     camera_pool = st.session_state.camera.display_selected()
     st.session_state.pool.update(camera_pool)
     with st.expander("More info about selected cameras",expanded=False):
-        message = st.session_state.messages.display(object=st.session_state.camera)
+        message = st.session_state.messages.camera_comments(st.session_state.camera)
         st.write(message)
 with networkSelection:
     if not st.session_state.pool.df.empty :
@@ -91,7 +91,7 @@ with networkSelection:
         st.session_state.network.edit()
         st.session_state.analyze_done = True
         with st.expander("Required equipment for use case",expanded=False):
-            message = st.session_state.messages.display(object=st.session_state.cyangear)
+            message = st.session_state.messages.gear_list(st.session_state.cyangear)
             st.write(message)
 with lensSelection:
     if not st.session_state.pool.df.empty :
