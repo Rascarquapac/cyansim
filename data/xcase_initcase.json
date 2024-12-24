@@ -1,0 +1,38 @@
+{
+    "Reference": {
+        "CV225": "MarshallCV225",
+        "BGH1": "BGH1",
+        "V-Raptor": "VRaptor",
+        "PXW-500": "PXW-X500"
+    },
+    "Number": {
+        "CV225": 2,
+        "BGH1": 1,
+        "V-Raptor": 1,
+        "PXW-500": 2
+    },
+    "Network": {
+        "CV225": "LAN Wired",
+        "BGH1": "LAN Wired",
+        "V-Raptor": "LAN Wired",
+        "PXW-500": "LAN Wired"
+    },
+    "lensControl": {
+        "CV225": "No Need",
+        "BGH1": "No Need",
+        "V-Raptor": "No Need",
+        "PXW-500": "No Need"
+    },
+    "lensType": {
+        "CV225": "Manual",
+        "BGH1": "TBD",
+        "V-Raptor": "TBD",
+        "PXW-500": "B4-Mount"
+    },
+    "lensMotor": {
+        "CV225": "No extra motors",
+        "BGH1": "TBD",
+        "V-Raptor": "TBD",
+        "PXW-500": "No extra motors"
+    }
+}

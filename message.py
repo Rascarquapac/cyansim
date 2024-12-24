@@ -9,17 +9,18 @@ from gear import Cyangear
 class Messages():
     def __init__(self) -> None:
         self.dic = {}
-        pickle_filepath = './picklized/messages.pkl' 
+        pickle_filepath   = './data/messages.pkl' 
+        markdown_filepath = './data/Messages.md' 
         if os.path.exists(pickle_filepath):
-            self.dic = self.read_pickle()
+            self.dic = self.read_pickle(pickle_filepath)
         else:
-            self.dic = self.picklize_messages()
+            self.dic = self.picklize_messages(markdown_filepath,pickle_filepath)
         return
-    def read_pickle(self):
-        with open('./picklized/messages.pkl', 'rb') as file:
+    def read_pickle(self,pickle_filepath):
+        with open(pickle_filepath, 'rb') as file:
             message_dic = pickle.load(file)        
         return message_dic
-    def picklize_messages(self):
+    def picklize_messages(self,markdown_filepath,pickle_filepath):
         message_dic = {}
         def store(topic,subtopic,message):
             if topic not in message_dic : message_dic[topic]={}
@@ -27,9 +28,8 @@ class Messages():
             message_dic[topic][subtopic]=message
         p  = re.compile(r"/\[(.*)\,(.*)\]")
         message = ""
-        with open('./Messages.md', 'r') as reader:
+        with open(markdown_filepath, 'r') as reader:
             line = reader.readline()
-            print("Line: ",line)
             first_line = True
             while line != '':  # The EOF char is an empty string
                 if line[0:2]== "/[":
@@ -45,12 +45,10 @@ class Messages():
                     subtopic = result.group(2)
                 else:
                     message += line
-                    # print("Keys: ",context, state,name)
-                    # print("Message: ",message)
                 line = reader.readline()
             # Store last message
             store(topic,subtopic,message)           
-        with open('./picklized/messages.pkl', 'wb') as file:
+        with open('./data/messages.pkl', 'wb') as file:
             pickle.dump(message_dic, file)
         return (message_dic)
     def camera_comments(self,camera):
@@ -66,8 +64,6 @@ class Messages():
         if df.empty:
             message = ""
         else:
-            # print(df)
-            # print(df.columns)
             for camera in df.index.to_list():
                 model = camera
                 reference = df.loc[camera,'Reference']
@@ -84,11 +80,9 @@ class Messages():
     def gear_list(self,gear):
         message = ""
         if gear.pool.df.empty:
-            message = ""
-            print("POOL DATAFRAME IS EMPTY … ")
+            message = "Error: message.gear_list--> Pool.df is empty"
         if not gear.dic:
-            message = ""
-            print("CYANGEAR ATTRIBUTES ARE EMPTY … ")
+            message = "Error: message.gear_list--> gear.dic is empty"
         else:
             message+=self.dic['quote']['general']
             message += "\n"
@@ -104,7 +98,6 @@ class Messages():
             for cable_type,cable_number in gear.cables.items():
                 message += f'  - {cable_type} x {cable_number}'
                 message += "\n"
-        # print("CYANGEAR DATAFRAME IS NOT EMPTY … ",message)
         return(message)
 
 if __name__ == "__main__":

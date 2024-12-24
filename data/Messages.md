@@ -16,6 +16,7 @@ This the **Cyanview Agent ** hmessage for testing **instance** messages:
 - **STEP 2** ->  Getting transmission medium, extra features
 - **STEP 3** ->  Providing a list of Cyanview equipment, motivations of its choice and documentation links
 /[camera,performance]
+#### {model}
 The camera **{model}** ({reference}) offers {control} from a remote control panel: more information about this can be found on the [Cyanview support page for {model}]({supporturl}). The description of the {model} can be found on the [{brand} webpage]({manufacturerurl})
 /[camera,unidirectional]
 The controllability of the camera is also limited by the fact that the protocol is unidirectional meaning that the absolute values of the camera parameters can only be estimated by the RCP and guessed by the operator looking at the resulting image. It can be better than no control but it is quite far of the richness of the full camera features.
