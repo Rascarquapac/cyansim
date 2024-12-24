@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json as json
 from pprint   import pprint
-from load import Descriptor
+from descriptor import Descriptor
 from pool import Pool
 from case import Case
 from view_sidebar  import Sidebar
@@ -14,13 +14,15 @@ from message  import Messages
 from draw     import Draw
 
 def ui_init():
-    # case file for initiating simulator
-    casefile = "initcase.json"
+    # PARAMETERS
+    casefile  = "./data/xcase_initcase.json"
+    gsheet    = True if st.secrets.parameters.gsheet    == "True" else False
+    case_init = True if st.secrets.parameters.case_init == "True" else False
     # Load objects once
-    descriptor = Descriptor(update=True)
+    descriptor = Descriptor(updateFromGsheet=gsheet)
     camera     = ViewCamera(descriptor)
     pool       = Pool()
-    case       = Case(camera=camera,pool=pool,active=True,filename=casefile)
+    case       = Case(camera=camera,pool=pool,active=case_init,filename=casefile)
     network    = ViewNetwork(pool)
     lens       = ViewLens(pool)
     cyangear   = Cyangear(pool)
@@ -92,6 +94,7 @@ with networkSelection:
         st.session_state.analyze_done = True
         with st.expander("Required equipment for use case",expanded=False):
             message = st.session_state.messages.gear_list(st.session_state.cyangear)
+            print("Message:",message)
             st.write(message)
 with lensSelection:
     if not st.session_state.pool.df.empty :
