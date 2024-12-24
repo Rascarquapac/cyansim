@@ -19,10 +19,10 @@ class Pool:
 				return self.cameralens.options_needs_init[row["CameraLensCategory"]][1]
 			def user_lensMotor(row):
 				return self.cameralens.options_needs_init[row["CameraLensCategory"]][2]
-			self.df["CameraLensCategory"] = self.df.apply(lensCategory,axis=1)
-			self.df["lensControl"]        = self.df.apply(user_lensControl,axis=1)
-			self.df["lensType"]           = self.df.apply(user_lensType,axis=1)
-			self.df["lensMotor"]          = self.df.apply(user_lensMotor,axis=1)
+			self.df.loc[:,"CameraLensCategory"] = self.df.apply(lensCategory,axis=1)
+			self.df.loc[:,"lensControl"]        = self.df.apply(user_lensControl,axis=1)
+			self.df.loc[:,"lensType"]           = self.df.apply(user_lensType,axis=1)
+			self.df.loc[:,"lensMotor"]          = self.df.apply(user_lensMotor,axis=1)
 		if camera_pool.empty:
 			pass
 		else:
