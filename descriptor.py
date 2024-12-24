@@ -1,12 +1,11 @@
 import pandas as pd
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
-from pprint import pprint
 
 class Descriptor():
-    def __init__(self,update=True,debug=False):
-        self.df  = self.load(update)
-        self.pickel_filename = "./picklized/cameras.pkl"
+    def __init__(self,updateFromGsheet=True,debug=False):
+        self.df  = self.load(updateFromGsheet)
+        self.pickel_filename = "./data/cameras.pkl"
     def load(self,update):
         def gsheet():
             conn = st.connection("cameras", type=GSheetsConnection)
@@ -23,7 +22,7 @@ class Descriptor():
             camera_df['Number'] = 0
             camera_df['Selected'] = False
             camera_df['Network'] = 'LAN Wired'
-            camera_df.to_pickle("./picklized/cameras.pkl")
+            camera_df.to_pickle("./data/cameras.pkl")
             return camera_df
         def pickel_file():
             return pd.read_pickle(self.pickel_filename)
