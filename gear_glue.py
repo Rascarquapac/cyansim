@@ -1,4 +1,3 @@
-from pprint import pprint
 
 class Glue():
     def __init__(self,serial_port_max,usba_port_max,ethernet_port_max,poe_powered):
@@ -17,18 +16,13 @@ class Glue():
         for camgroup in camgroups:
             # update_status(devices_status)
             camgroup_indexes  = self.df.loc[self.df['Camgroup'] == camgroup].index.tolist() 
-            # print("Camgroup:",camgroup)
             for index in camgroup_indexes:
                 device = self.df.loc[index,'Device']
                 fanout = self.df.loc[index,'Fanout']
                 self.df.loc[index,'Device_id'] = devices_status.get_device_id(device,fanout)
-                # print(f'usecase-->_network-->get_device_id->device_status=\n{devices_status.__dict__[device]}\n Fanout = {fanout}')
                 value = (self.df.loc[index,'LensCable'],self.df.loc[index,'MotorCable'],self.df.loc[index,'LensMotor'])
-                # print(f'CABLES: {value}\n')
             # camgroup_update_status(devices_status)
             devices_status.camgroup_update()
-                # print("    Device_id    : ",self.df.loc[index,'Device_id'])
-                # print("    Device Status: ",devices_status)
 
 class GlueTBD(Glue):
     def __init__(self):

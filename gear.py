@@ -99,14 +99,11 @@ class Cyangear():
         for camgroup in camgroups:
             # update_status(devices_status)
             camgroup_indexes  = self.df.loc[self.df['Camgroup'] == camgroup].index.tolist() 
-            # print("Camgroup:",camgroup)
             for index in camgroup_indexes:
                 device = self.df.loc[index,'Device']
                 fanout = self.df.loc[index,'Fanout']
                 self.df.loc[index,'Device_id'] = devices_state.get_device_id(device,fanout)
-                # print(f'usecase-->_network-->get_device_id->device_status=\n{devices_state.devices[device]}\n Fanout = {fanout}')
                 value = (self.df.loc[index,'LensCable'],self.df.loc[index,'MotorCable'],self.df.loc[index,'LensMotor'])
-                # print(f'CABLES: {value}\n')
             # camgroup_update_status(devices_status)
             devices_state.camgroup_update()
     # Add one switcher per camera group
@@ -143,8 +140,6 @@ class Cyangear():
             for index in camgroup_indexes:
                 self.df.loc[index,'RCP_id'] = get_rcp_id(rcps_status,self.df.loc[index,'RCPtype']) 
                 value = self.df.loc[index,'RCP_id']
-                # print(f'!!!!RCP_ID: {value}')
-            # print(f"CAMGROUPS: {camgroup}, RCPS_STATUS: {rcps_status}")
             for key in rcps_status:
                 (number,port,maxconnect,camgroup_instanciated) = rcps_status[key]
                 if camgroup_instanciated :
@@ -152,7 +147,6 @@ class Cyangear():
                     camgroup_instanciated = False
                     number += 1
                 rcps_status[key] = (number,port,maxconnect,camgroup_instanciated)
-            # print(f"END CAMGROUPS: {camgroup}, RCPS_STATUS: {rcps_status}")
     # Optimize the number of RCPs required
     def rcp_optimize(self):
         def get_rcptype_rcp_id(current_RCP,occurences):
@@ -245,8 +239,3 @@ class Cyangear():
         self.rcp_optimize()
         self.count()
         self.df.to_csv("./debug/cyangear_df.csv")
-        # if global_debug_usecase_record: debug_usecase_to_csv(self.df,global_debug_prefix)
-        # print('########## RCPs :',self.rcps)
-        # print('########## DEVICES :',self.devices)
-        # print('########## CABLEs :',self.cables)
-        pass

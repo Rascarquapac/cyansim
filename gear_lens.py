@@ -52,7 +52,6 @@ class CameraLens():
     @classmethod
     def adapter(self,parameters):
         def check(parameters):
-            # print("Lens->lens_cable->check->PARAMETERS:\n",parameters)
             (cameraType,cameraBrand,cameraModel,lensControl,lensType,lensMotor) = parameters
             ## DUPLICATE !!!!
             if cameraType not in ["BBlock","CineStyle","Handheld Camcorder","Minicam","Minicam Motorizable","Minicam IZT","Mirrorless","PTZ","Shoulder Camcorder","Slow Motion","System","TBD"]:
@@ -74,8 +73,6 @@ class CameraLens():
         # Set cameraLensCategory
         cameraLensCategory = self.cameraLens_category(cameraType)
         # Set cables and motors
-        # print("\n_lens->lens_cable_selext->PARAMETERS: ",parameters)
-        # print("\n_lens->lens_cable_selext->MATCH INPUT: ",(cameraLensCategory,cameraBrand,cameraModel,lensControl,lensType,lensMotor) )
         match (cameraLensCategory,cameraBrand,cameraModel,lensControl,lensType,lensMotor):
             # No Cyanview lens control is needed
             case(a,b,c,"No Need",e,f) : 
@@ -128,7 +125,6 @@ class CameraLens():
                 result = (no_cable,no_cable,motor_dreamchip,"The user needs the control of Iris/Zoom and it can be done through the camera")
             case _: 
                 result =(no_cable,no_cable,no_motor,"This case is probably not supported")
-        # print(f"_lens->lens_cable_selext->RESULT: {result}")
         return result
         
     ########## FLAT ANALYZIS
@@ -177,8 +173,6 @@ class CameraLensGraph():
         camera_name = self.reference + camera_id.split('_',-1)[-1]
         lens_type   = clean(self.lensType) 
         lens_id = f'{lens_type}_{camera_id}'
-        # print("-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x\n")
-        # print(f'Camera Lens Category: {self.camLensCat} IZF_INTEGRATED.name: {CC.IZF_INTEGRATED.value}')
         self.code += f"%% CameraCategory:{self.camLensCat}, LensControl:{self.lensControl}, LensType:{self.lensType}\n"
         match (self.camLensCat,self.lensControl,self.lensType):
             case (CC.IZF_INTEGRATED.value,lensControl,lensType):                        

@@ -60,7 +60,6 @@ class ViewLens():
 		if 'LensTypes' not in self.pool.df.columns:
 			self.pool.df['LensTypes']=""
 		cameraLensCategories = self.pool.df["CameraLensCategory"].unique()
-		self.pool.df.to_csv('debug_pool_display_lens.csv', index=False)
 		#print("################CAMERAS LENS CATEGORIES  :",cameraLensCategories)
 		for cameraLensCategory in cameraLensCategories:
 			#filter instance dataframe by type
