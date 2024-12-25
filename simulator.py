@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import json as json
-from pprint   import pprint
 from descriptor import Descriptor
 from pool import Pool
 from case import Case

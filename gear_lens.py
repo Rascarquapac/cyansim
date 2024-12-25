@@ -206,4 +206,5 @@ class CameraLensGraph():
                     self.code += f'    {lens_id}[[{lens_type}]]\n'
                 else:
                     self.code += f'    {lens_id}[[{lens_type}]]\n'
+                    # self.code += f'    {lens_id}@{{ img: "https://i.imgur.com/ctZI7sm.png", h: 50, w: 100, pos: "b", constraint: "on"}}\n'
                 self.code += '  end\n'
