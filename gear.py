@@ -14,7 +14,7 @@ class Cyangear():
         self.cables  = {}
         self.devices = {}
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
-    def create_gear_df(self):
+    def create_gear(self):
         # Create a dictionnary from the Pool dataframe with 
         #     key = instance name based on Pool dataframe index
         #     data = dataframe row retlated to the index as a list
@@ -55,10 +55,21 @@ class Cyangear():
             self.df['LensTypeNeed']     = "TBD"
             self.df['LensMotorNeed']    = "TBD"
             return
+        # Create a dictionnary of objects associated to the dataframe index
+        def set_objects_dic():
+            for index in self.df.index.to_list():
+                df_row = self.df.loc[index]
+                # cameralens = CameraLens(index,df_row["Reference"],df_row["Protocol"],df_row["Cable"])
+                cameralens = CameraLens()
+                glue       = GlueTBD() 
+                medium     = Medium()
+                rcp        = RCP_TBD()
+                self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
         if not self.pool.df.empty:
             paths_dict = dataframe_to_dic()
             self.df = dic_to_dataframe(paths_dict)
             columns()       
+            set_objects_dic()
         return 
     # Create a dictionnary of objects associated to the dataframe index
     def set_objects_dic(self):
@@ -219,8 +230,8 @@ class Cyangear():
         self.devices = device_count(self.df)
 
     def analyze(self):
-        self.create_gear_df()
-        self.set_objects_dic()
+        self.create_gear()
+        # self.set_objects_dic()
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
         # # IP or serial converter
