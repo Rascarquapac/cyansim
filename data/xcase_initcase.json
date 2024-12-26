@@ -12,9 +12,9 @@
         "PXW-500": 2
     },
     "Network": {
-        "CV225": "LAN Wired",
-        "BGH1": "LAN Wired",
-        "V-Raptor": "LAN Wired",
+        "CV225": "LAN RF Halow",
+        "BGH1": "LAN RF Halow",
+        "V-Raptor": "LAN RF Halow",
         "PXW-500": "LAN Wired"
     },
     "lensControl": {

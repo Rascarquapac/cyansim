@@ -18,7 +18,7 @@ graph TB
 		GSHEET_gs[("Gsheet")]
 		GSHEET_gs-->load
 		load-->CATALOG_df
-	CATALOG_df-->matching
+	CATALOG_df--->matching
 	end
 	end
 	%% CAMERA
@@ -26,7 +26,7 @@ graph TB
 	MATCHED_df-->edit_cam
 	edit_cam--> SELECT
 	SELECT-->edit_cam
-	edit_cam-->POOL_df
+	edit_cam--->POOL_df
 	POOL_df-->display
 	subgraph RESULT
 		SELECTED
@@ -46,7 +46,7 @@ graph TB
     subgraph POOL
        POOL_df[("Pool")] 
 	end
-	POOL_df-->analyze
+	POOL_df---->analyze
 	analyze-->ROUTED_df
 	ROUTED_df-->schematize
 	schematize-->SCHEME
