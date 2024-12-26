@@ -15,19 +15,17 @@ class Cyangear():
         self.devices = {}
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
     def create_gear(self):
-        # Create a dictionnary from the Pool dataframe with 
-        #     key = instance name based on Pool dataframe index
-        #     data = dataframe row retlated to the index as a list
+        # Dictionnary with keys being camera instance identifier, value being pool.df row related to camera model 
         def dataframe_to_dic():
             paths_dict = {}
-            if not self.pool.df.empty:
-                for camera_index in self.pool.df.index.to_list():
-                    for i in range(int(self.pool.df.loc[camera_index,'Number'])):
-                        new_index = str(camera_index) + "_" + str(i) 
-                        variables = []
-                        variables.extend(self.pool.df.loc[camera_index].tolist())
-                        paths_dict[new_index] = list(variables)
-            return (paths_dict)
+            if self.pool.df.empty: return paths_dict
+            for camera_index in self.pool.df.index.to_list():
+                for i in range(int(self.pool.df.loc[camera_index,'Number'])):
+                    new_index = str(camera_index) + "_" + str(i) 
+                    variables = []
+                    variables.extend(self.pool.df.loc[camera_index].tolist())
+                    paths_dict[new_index] = list(variables)
+            return paths_dict
         # Create a dataframe from dictionnary   
         def dic_to_dataframe(paths_dict):
             df = pd.DataFrame.from_dict(paths_dict, orient = 'index', columns = self.pool.df.columns.values)
@@ -55,6 +53,25 @@ class Cyangear():
             self.df['LensTypeNeed']     = "TBD"
             self.df['LensMotorNeed']    = "TBD"
             return
+        def rewrite_columns():
+           gear_level1_columns=  ['Reference', 'Protocol', 'Brand', 'CameraLensControl', 'LensMount',
+       'Name', 'Type', 'Cable', 'MaxDelayToComplete', 'ControlCoverage',
+       'Bidirectionnal', 'Number', 'Network', 'CameraLensCategory',
+       'lensControl', 'lensType', 'lensMotor', 'LensTypes', 'Camera_id',
+       'Device', 'Device_id', 'Switch_id', 'RCP_id', 'Camgroup', 'RCPtype',
+       'Fanout', 'LensCable', 'MotorCable', 'LensMotor', 'LensControlNeed',
+       'LensTypeNeed', 'LensMotorNeed']
+           gear_level0_columns = ['Camera', 'Camera', 'Camera', 'Lens', 'Lens',
+       'Camera', 'Camera', 'Camera', 'Medium', 'Camera',
+       'Camera', 'Camera', 'Medium', 'Lens',
+       'Lens', 'Lens', 'Lens', 'Lens', 'Camera',
+       'Glue', 'Glue', 'RCP', 'RCP', 'Camgroup', 'RCP',
+       'Glue', 'Lens', 'Lens', 'Lens', 'User',
+       'User', 'User']
+           new_columns = pd.MultiIndex.from_arrays([gear_level1_columns, gear_level0_columns]) 
+           # Assigner le nouveau MultiIndex aux colonnes du DataFrame
+           #self.df.columns = new_columns
+
         # Create a dictionnary of objects associated to the dataframe index
         def set_objects_dic():
             for index in self.df.index.to_list():
@@ -69,6 +86,7 @@ class Cyangear():
             paths_dict = dataframe_to_dic()
             self.df = dic_to_dataframe(paths_dict)
             columns()       
+            print("Colones de gear.df",self.df.columns)
             set_objects_dic()
         return 
     # Create a dictionnary of objects associated to the dataframe index
