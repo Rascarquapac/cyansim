@@ -56,20 +56,15 @@ class ViewNetwork():
                     key = session_key,
         #            on_change = st.rerun,
                     )
-				if hasattr(st.session_state,session_key):
-					print(session_key," : ",st.session_state[session_key])
 			return(df)
 		blocks = {}
 		camera_types = self.pool.df["Type"].unique()
-		# print("Camera Types:",camera_types)
 		for camera_type in camera_types:
             #filter instance dataframe by type
 			selected_rows = self.pool.df.loc[self.pool.df['Type'] == camera_type]
 			if not selected_rows.empty :
-				# print("Camera Type:",camera_type)
 				st.markdown(camera_type)
 				blocks[camera_type] = network_edit_block(selected_rows,key=camera_type)
 		final = pd.concat(list(blocks.values()))
-		# print("StreamUI->pool_edit_camera_for_network-> POOL.FINAL columns:\n",final.columns)
 		self.pool.df = final
 		return final
