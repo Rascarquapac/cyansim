@@ -184,11 +184,11 @@ class CameraLensGraph():
                 self.code += camera_id + '{{"' + camera_name + '"}}<-->|'+ cable +'|'+ device_id +'\n'
             case _:
                 self.code += f"%%DBG: NOT (CC.FIXED_LENS, CC.IZF_INTEGRATED) branch\n"
-                self.code += lens_id   + '[[' + lens_type   + ']]<-->'+camera_id+'\n'
+                self.code += lens_id   + '[[' + lens_type   + ']]<==>'+camera_id+'\n'
                 self.code += camera_id + '{{"' + camera_id + ' fa:fa-camera-retro"}}---|'+cable +'|'+device_id+'\n'
                 # Add to mermaid code LR edge from lens to Cyanglue
                 if self.lensType != 'TBD' and self.llensCable != 'No cable' :
-                    self.code += f'{lens_id}([{self.lensType}])---|{clean(self.llensCable)}|{clean(self.device_id)}\n'
+                    self.code += f'{lens_id}([{self.lensType}])===|{clean(self.llensCable)}|{clean(self.device_id)}\n'
                 # Create subgraph parameters for camera + lens
                 self.subgraph_id   = f'{clean(self.camera_id)}_cameralens'
                 if self.lensControl == 'No Need':
@@ -203,8 +203,8 @@ class CameraLensGraph():
                 self.code += f'  subgraph {self.subgraph_id} [{self.subgraph_title}]\n'
                 self.code += f'    {camera_id}\n'
                 if self.lensType != 'TBD' and self.llensCable != 'No Cable' :
-                    self.code += f'    {lens_id}[[{lens_type}]]\n'
+                    self.code += f'    {lens_id}([{lens_type}])\n'
                 else:
-                    self.code += f'    {lens_id}[[{lens_type}]]\n'
+                    self.code += f'    {lens_id}([{lens_type}])\n'
                     # self.code += f'    {lens_id}@{{ img: "https://i.imgur.com/ctZI7sm.png", h: 50, w: 100, pos: "b", constraint: "on"}}\n'
                 self.code += '  end\n'
