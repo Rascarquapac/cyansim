@@ -7,8 +7,8 @@
     },
     "Number": {
         "CV225": 2,
-        "BGH1": 1,
-        "V-Raptor": 1,
+        "BGH1": 2,
+        "V-Raptor": 2,
         "PXW-500": 2
     },
     "Network": {
@@ -19,18 +19,18 @@
     },
     "lensControl": {
         "CV225": "No Need",
-        "BGH1": "No Need",
-        "V-Raptor": "No Need",
-        "PXW-500": "No Need"
+        "BGH1": "Iris",
+        "V-Raptor": "IZF",
+        "PXW-500": "IZF"
     },
     "lensType": {
         "CV225": "Manual",
-        "BGH1": "TBD",
-        "V-Raptor": "TBD",
+        "BGH1": "B4-Mount",
+        "V-Raptor": "Cineservo",
         "PXW-500": "B4-Mount"
     },
     "lensMotor": {
-        "CV225": "No extra motors",
+        "CV225": "Manual",
         "BGH1": "TBD",
         "V-Raptor": "TBD",
         "PXW-500": "No extra motors"
