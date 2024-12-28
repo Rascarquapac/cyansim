@@ -9,7 +9,7 @@ class Cyangear():
         self.pool = pool
         self.df  = {}
         self.dic = {}
-        self.devices_state = DevicesState(self.pool.df)
+        self.devices_state = None
         self.rcps    = {}
         self.cables  = {}
         self.devices = {}
@@ -249,6 +249,7 @@ class Cyangear():
 
     def analyze(self):
         self.create_gear()
+        self.devices_state = DevicesState(self.pool.df)
         # self.set_objects_dic()
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
