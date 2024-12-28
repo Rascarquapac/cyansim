@@ -17,7 +17,7 @@ class Case():
 					self.camera.df.loc[index,'Number']=self.initcase_dict['Number'][index]
 			return
 		def init_pool_df():
-			self.pool.update(self.camera.df)
+			self.pool.build(self.camera.df)
 			if self.initcase_dict == {}:
 				row_to_include = []
 			else:	

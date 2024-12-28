@@ -82,7 +82,7 @@ with cameraSelection :
     st.divider()
     st.caption("Your Current Cameras Pool")
     camera_pool = st.session_state.camera.display_selected()
-    st.session_state.pool.update(camera_pool)
+    st.session_state.pool.build(camera_pool)
     with st.expander("More info about selected cameras",expanded=False):
         message = st.session_state.messages.camera_comments(st.session_state.camera)
         st.write(message)
