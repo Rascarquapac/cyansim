@@ -1,6 +1,6 @@
 import pandas as pd
 import constants as cst 
-from constants import CameraCategories as CC
+from constants import CameraCategory as CameraCategory
 # Should be part of cyangear Constants object
 class CameraLens():
     def __init__(self) -> None:
@@ -73,6 +73,7 @@ class CameraLens():
         # Set cameraLensCategory
         cameraLensCategory = self.cameraLens_category(cameraType)
         # Set cables and motors
+        print("\nDBG CameraLens.adapter parameters=",parameters,cameraLensCategory)
         match (cameraLensCategory,cameraBrand,cameraModel,lensControl,lensType,lensMotor):
             # No Cyanview lens control is needed
             case(a,b,c,"No Need",e,f) : 
@@ -125,6 +126,7 @@ class CameraLens():
                 result = (no_cable,no_cable,motor_dreamchip,"The user needs the control of Iris/Zoom and it can be done through the camera")
             case _: 
                 result =(no_cable,no_cable,no_motor,"This case is probably not supported")
+        print("DBG CameraLens.adapter result=",result)  
         return result
         
     ########## FLAT ANALYZIS
@@ -162,49 +164,67 @@ class CameraLensGraph():
         self.lmotorCable = row['MotorCable']
         self.llensMotor  = row['LensMotor']
         self.camLensCat  = row['CameraLensCategory']
-        self.code = ''
-        self.mermaid()
+        self.code = self.mermaid()
     def mermaid(self):
         def clean(code):
             return(code.replace(' ', ''))
         device_id   = clean(self.device_id)
         camera_id   = clean(self.camera_id)
         cable       = clean(self.cable)
+        lens_cable  = clean(self.llensCable)
         camera_name = self.reference + camera_id.split('_',-1)[-1]
         lens_type   = clean(self.lensType) 
-        lens_id = f'{lens_type}_{camera_id}'
-        self.code += f"%% CameraCategory:{self.camLensCat}, LensControl:{self.lensControl}, LensType:{self.lensType}\n"
+        lens_id     = f'{lens_type}_{camera_id}'
+        code = ''
+        header = f"%% CameraCategory:{self.camLensCat}, LensControl:{self.lensControl}, LensType:{self.lensType}\n"
+        subgraph_start = ''
+        subgraph_end   = ''
+        lens2device    = ''
         match (self.camLensCat,self.lensControl,self.lensType):
-            case (CC.IZF_INTEGRATED.value,lensControl,lensType):                        
-                self.code += f"%%DBG: CC.IZF_INTEGRATED branch\n"
-                self.code += lens_id   + '[[' + lens_type   + ']]<-->'+camera_id+'\n'
-                self.code += camera_id + '['  + camera_name + ']<-->|'+ cable +'|'+ device_id +'\n'
-            case (CC.FIXED_LENS.value,lensControl,lensType):
-                self.code += f"%%DBG: CC.FIXED_LENS branch\n"
-                self.code += camera_id + '{{"' + camera_name + '"}}<-->|'+ cable +'|'+ device_id +'\n'
+            case (CameraCategory.IZF_INTEGRATED.value,lensControl,lensType):   
+                dbg_code = f"%%DBG: CameraCategory.IZF_INTEGRATED branch\n"      
+                lens2camera   = lens_id + '<==>' + camera_id+'\n'
+                camera2device = camera_id + '<-->' + '|' + cable + '|' + device_id+'\n'
+                lens2device   = ''
+                lens_node   = f"{lens_id}@{{ shape: stadium, label: {lens_type} }}\n"
+                camera_node = f"{camera_id}@{{ shape: hex, label: {camera_name}  }}\n"
+            case (CameraCategory.FIXED_LENS.value,lensControl,lensType):
+                dbg_code = f"%%DBG: CameraCategory.FIXED_LENS branch\n"
+                lens2camera   = f"%%INF: No lens displayed\n"
+                camera2device = camera_id +  '<-->' + '|' + cable + '|' + device_id+'\n'
+                lens2device   = ''
+                camera_node = f"{camera_id}@{{ shape: hex, label: {camera_name}  }}\n"
+                lens_node   = ""
             case _:
-                self.code += f"%%DBG: NOT (CC.FIXED_LENS, CC.IZF_INTEGRATED) branch\n"
-                self.code += lens_id   + '[[' + lens_type   + ']]<==>'+camera_id+'\n'
-                self.code += camera_id + '{{"' + camera_id + ' fa:fa-camera-retro"}}---|'+cable +'|'+device_id+'\n'
-                # Add to mermaid code LR edge from lens to Cyanglue
+                dbg_code = f"%%DBG: NOT (CameraCategory.FIXED_LENS, CameraCategory.IZF_INTEGRATED) branch\n"
+                lens2camera   = lens_id + '<==>' + camera_id+'\n'
+                camera2device = camera_id +  '<-->' + '|' + cable + '|' + device_id+'\n'
                 if self.lensType != 'TBD' and self.llensCable != 'No cable' :
-                    self.code += f'{lens_id}([{self.lensType}])===|{clean(self.llensCable)}|{clean(self.device_id)}\n'
-                # Create subgraph parameters for camera + lens
+                    lens2device = lens_id + '<-->' + '|' + lens_cable + '|' + device_id+'\n'
+                else:
+                    lens2device = f'%%INF: No lens cable displayed\n'
+                # SUBGRAPH
                 self.subgraph_id   = f'{clean(self.camera_id)}_cameralens'
-                if self.lensControl == 'No Need':
-                    self.subgraph_title = 'No lens control required'
-                elif self.lensControl == 'Iris':
-                    self.subgraph_title = 'Iris control required'
-                elif self.lensControl == 'IZF':
-                    self.subgraph_title = 'Iris/Zoom/Focus control required'
-                else:
-                    self.subgraph_title = self.lensControl
-                # Add to mermaid code the camera-lens subgraph 
-                self.code += f'  subgraph {self.subgraph_id} [{self.subgraph_title}]\n'
-                self.code += f'    {camera_id}\n'
+                if self.lensControl   == 'No Need': self.subgraph_title = 'NO Remote Control Request'
+                elif self.lensControl == 'Iris':  self.subgraph_title = 'Iris Remote Control Request'
+                elif self.lensControl == 'IZF':   self.subgraph_title = 'I+Z+F Remote Control Request'
+                else:                             self.subgraph_title = self.lensControl
+                subgraph_start = f'  subgraph {self.subgraph_id} [{self.subgraph_title}]\n'
+                subgraph_end   = '  end\n'
+                camera_node = f"{camera_id}@{{ shape: hex, label: {camera_name}  }}\n"
                 if self.lensType != 'TBD' and self.llensCable != 'No Cable' :
-                    self.code += f'    {lens_id}([{lens_type}])\n'
+                    lens_node = f"{lens_id}@{{ shape: stadium, label: {lens_type} }}\n"
                 else:
-                    self.code += f'    {lens_id}([{lens_type}])\n'
-                    # self.code += f'    {lens_id}@{{ img: "https://i.imgur.com/ctZI7sm.png", h: 50, w: 100, pos: "b", constraint: "on"}}\n'
-                self.code += '  end\n'
+                    lens_node = f"{lens_id}@{{ shape: stadium, label: {lens_type} }}\n"
+                    # code += f'    {lens_id}@{{ img: "https://i.imgur.com/ctZI7sm.png", h: 50, w: 100, pos: "b", constraint: "on"}}\n'
+        code += '    ' + dbg_code 
+        code += '    ' + header 
+        code += '     ' + camera2device 
+        code += '     ' + lens2camera
+        code += '     ' + lens2device
+        code += '     ' + subgraph_start
+        code += '       ' + lens_node
+        code += '       ' + camera_node 
+        code += '     ' + subgraph_end
+        return code
+
