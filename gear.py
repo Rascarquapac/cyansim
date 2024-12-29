@@ -49,19 +49,16 @@ class Cyangear():
             self.df['MotorCable'] = ""
             self.df['LensMotor']  = ""
             # User's Need parameters
-            self.df['LensControlNeed']  = "No Need"
-            self.df['LensTypeNeed']     = "TBD"
-            self.df['LensMotorNeed']    = "TBD"
-            return
+#            return
         def rewrite_columns():
-           gear_level1_columns=  ['Reference', 'Protocol', 'Brand', 'CameraLensControl', 'LensMount',
+           gear_level1_columns=  ['Reference', 'Protocol', 'Brand', 'LensMount',
        'Name', 'Type', 'Cable', 'MaxDelayToComplete', 'ControlCoverage',
        'Bidirectionnal', 'Number', 'Network', 'CameraLensCategory',
        'lensControl', 'lensType', 'lensMotor', 'LensTypes', 'Camera_id',
        'Device', 'Device_id', 'Switch_id', 'RCP_id', 'Camgroup', 'RCPtype',
        'Fanout', 'LensCable', 'MotorCable', 'LensMotor', 'LensControlNeed',
        'LensTypeNeed', 'LensMotorNeed']
-           gear_level0_columns = ['Camera', 'Camera', 'Camera', 'Lens', 'Lens',
+           gear_level0_columns = ['Camera', 'Camera', 'Camera', 'Lens',
        'Camera', 'Camera', 'Camera', 'Medium', 'Camera',
        'Camera', 'Camera', 'Medium', 'Lens',
        'Lens', 'Lens', 'Lens', 'Lens', 'Camera',
@@ -100,7 +97,7 @@ class Cyangear():
             rcp        = RCP_TBD()
             self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
     def adapter(self,row):
-        parameters=(row['Type'],row['Brand'],row['Reference'],row['LensControlNeed'],row['LensTypeNeed'],row['LensMotorNeed'])
+        parameters=(row['Type'],row['Brand'],row['Reference'],row['lensControl'],row['lensType'],row['lensMotor'])
         accessories =CameraLens.adapter(parameters)
         return pd.Series([accessories[0], accessories[1],accessories[2]])
     def device_direct(self,row):

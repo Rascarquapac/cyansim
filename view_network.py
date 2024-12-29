@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from constants import Network_Enum
+from constants import NetworkType
 
 class ViewNetwork():
 	def __init__(self,pool):
@@ -28,7 +28,7 @@ class ViewNetwork():
                             "IP Network",
                             help="Select the IP network type",
                             width="small",
-                            options = [member.value for member in Network_Enum],
+                            options = [member.value for member in NetworkType],
                             required=True),
                         "Brand": "Brand",
                         "Cable": "Cable",

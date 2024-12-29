@@ -1,38 +1,50 @@
 {
     "Reference": {
+        "AtomOne SSM500": "AtomOne SSM500",
+        "AtomOne SSM500 B4": "AtomOne SSM500 B4",
+        "PXW-500": "PXW-X500",
         "CV225": "MarshallCV225",
         "BGH1": "BGH1",
-        "V-Raptor": "VRaptor",
-        "PXW-500": "PXW-X500"
+        "V-Raptor": "VRaptor"
     },
     "Number": {
+        "AtomOne SSM500": 1,
+        "AtomOne SSM500 B4": 1,
+        "PXW-500": 2,
         "CV225": 2,
         "BGH1": 2,
-        "V-Raptor": 2,
-        "PXW-500": 2
+        "V-Raptor": 2
     },
     "Network": {
-        "CV225": "LAN RF Halow",
+        "AtomOne SSM500": "LAN Wired",
+        "AtomOne SSM500 B4": "LAN Wired",
+        "PXW-500": "LAN Wired",
+        "CV225": "WAN 4G 5G",
         "BGH1": "LAN RF Halow",
-        "V-Raptor": "LAN RF Halow",
-        "PXW-500": "LAN Wired"
+        "V-Raptor": "LAN RF Halow"
     },
     "lensControl": {
+        "AtomOne SSM500": "No Need",
+        "AtomOne SSM500 B4": "Iris",
+        "PXW-500": "IZF",
         "CV225": "No Need",
-        "BGH1": "Iris",
-        "V-Raptor": "IZF",
-        "PXW-500": "IZF"
+        "BGH1": "IZF",
+        "V-Raptor": "IZF"
     },
     "lensType": {
+        "AtomOne SSM500": "B4-Mount",
+        "AtomOne SSM500 B4": "B4-Mount",
+        "PXW-500": "B4-Mount",
         "CV225": "Manual",
         "BGH1": "B4-Mount",
-        "V-Raptor": "Cineservo",
-        "PXW-500": "B4-Mount"
+        "V-Raptor": "E-Mount"
     },
     "lensMotor": {
-        "CV225": "Manual",
+        "AtomOne SSM500": "No extra motors",
+        "AtomOne SSM500 B4": "No extra motors",
+        "PXW-500": "No extra motors",
+        "CV225": "No extra motors",
         "BGH1": "TBD",
-        "V-Raptor": "TBD",
-        "PXW-500": "No extra motors"
+        "V-Raptor": "TBD"
     }
 }

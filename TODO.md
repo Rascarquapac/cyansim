@@ -1,7 +1,7 @@
 ## Developments
-- debug / record / upload/ pool for starting from predefined setups or building predefined setup
-- correct instance number for devices
-- correct camera name for schema
+- validation of descriptor values
+- adding specific values for a camera different from camera x protocol (PMW-EX3)
+- licence specific to camera (SSM500)
 - abstract edit method with groups/blocks:
 	- init values for columns of each_group : 
 		- {'groupname':{'colname': value},{}} 
