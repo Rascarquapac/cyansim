@@ -52,8 +52,8 @@ class DevicesState():
     def __init__(self,df):
         self.devices = {
             'ci0'      : {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"CI0"},
-            'rio'      : {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO"},
-            'rio_live' : {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO-LIVE"},
+            'rio'      : {'current_instance':0,'consumed_connections':0,'max_connections':1  ,'instanciated':False,'name':"RIO"},
+            'rio_live' : {'current_instance':0,'consumed_connections':0,'max_connections':1  ,'instanciated':False,'name':"RIO-LIVE"},
             'rsbm'     : {'current_instance':0,'consumed_connections':0,'max_connections':8  ,'instanciated':False,'name':"RSBM"},
             'ip'       : {'current_instance':0,'consumed_connections':0,'max_connections':100,'instanciated':False,'name':"IPswitch"},
         }
