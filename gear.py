@@ -1,6 +1,6 @@
 import pandas as pd
 from gear_lens import CameraLens
-from gear_glue import *
+from gear_glue import GlueTBD, DevicesState
 from gear_medium import Medium
 from gear_rcp import *
 
@@ -128,6 +128,7 @@ class Cyangear():
             for index in camgroup_indexes:
                 device = self.df.loc[index,'Device']
                 fanout = self.df.loc[index,'Fanout']
+                print("Iteration on camgroup_indexes",index,device,fanout)
                 self.df.loc[index,'Device_id'] = devices_state.get_device_id(device,fanout)
                 value = (self.df.loc[index,'LensCable'],self.df.loc[index,'MotorCable'],self.df.loc[index,'LensMotor'])
             # camgroup_update_status(devices_status)
