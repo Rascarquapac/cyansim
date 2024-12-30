@@ -5,7 +5,7 @@ class DevicesStatus():
     def __init__(self):
         self.ci0      = {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"CI0"}
         self.rio      = {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO"}
-        self.rio_live = {'current_instance':0,'consumed_connections':0,'max_connections':2  ,'instanciated':False,'name':"RIO-LIVE"}
+        self.rio_live = {'current_instance':0,'consumed_connections':0,'max_connections':1  ,'instanciated':False,'name':"RIO-LIVE"}
         self.rsbm     = {'current_instance':0,'consumed_connections':0,'max_connections':8  ,'instanciated':False,'name':"RSBM"}
         self.ip       = {'current_instance':0,'consumed_connections':0,'max_connections':100,'instanciated':False,'name':"IP-SWITCH"}
         # update devices status when changing camgroup
@@ -103,7 +103,7 @@ class Medium():
     def camgroup(self,camtype,network):
         return camtype
     @classmethod
-    # According to device fanout and the camera camgroup instanciate devices and add instance number
+    # According to device fanout and the camera camgroup, instanciate devices and add instance number
     def device_id_from_device(self):
         devices_status = DevicesStatus()
         camgroups = self.df['Camgroup'].unique() 

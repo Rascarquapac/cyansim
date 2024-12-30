@@ -73,7 +73,7 @@ class CameraLens():
         # Set cameraLensCategory
         cameraLensCategory = self.cameraLens_category(cameraType)
         # Set cables and motors
-        print("\nDBG CameraLens.adapter parameters=",parameters,cameraLensCategory)
+        # print("\nDBG CameraLens.adapter parameters=",parameters,cameraLensCategory)
         match (cameraLensCategory,cameraBrand,cameraModel,lensControl,lensType,lensMotor):
             # No Cyanview lens control is needed
             case(a,b,c,"No Need",e,f) : 
@@ -126,7 +126,7 @@ class CameraLens():
                 result = (no_cable,no_cable,motor_dreamchip,"The user needs the control of Iris/Zoom and it can be done through the camera")
             case _: 
                 result =(no_cable,no_cable,no_motor,"This case is probably not supported")
-        print("DBG CameraLens.adapter result=",result)  
+        # print("DBG CameraLens.adapter result=",result)  
         return result
         
     ########## FLAT ANALYZIS
