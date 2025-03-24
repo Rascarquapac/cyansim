@@ -14,7 +14,7 @@ graph TB
 	TYPE-->matching
 	end
 	subgraph CAMERA
-		load[["load"]]
+		load[["Descriptor.load"]]
 		GSHEET_gs[("Gsheet")]
 		GSHEET_gs-->load
 		load-->CATALOG_df
