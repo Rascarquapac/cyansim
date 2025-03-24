@@ -1,50 +1,50 @@
 {
     "Reference": {
-        "AtomOne SSM500": "AtomOne SSM500",
-        "AtomOne SSM500 B4": "AtomOne SSM500 B4",
-        "PXW-500": "PXW-X500",
-        "CV225": "MarshallCV225",
+        "V-Raptor": "VRaptor",
         "BGH1": "BGH1",
-        "V-Raptor": "VRaptor"
+        "CV225": "MarshallCV225",
+        "PXW-500": "PXW-X500",
+        "AtomOne SSM500": "AtomOne SSM500",
+        "AtomOne SSM500 B4": "AtomOne SSM500 B4"
     },
     "Number": {
-        "AtomOne SSM500": 1,
-        "AtomOne SSM500 B4": 1,
-        "PXW-500": 2,
-        "CV225": 2,
+        "V-Raptor": 2,
         "BGH1": 2,
-        "V-Raptor": 2
+        "CV225": 2,
+        "PXW-500": 2,
+        "AtomOne SSM500": 1,
+        "AtomOne SSM500 B4": 1
     },
     "Network": {
-        "AtomOne SSM500": "LAN Wired",
-        "AtomOne SSM500 B4": "LAN Wired",
-        "PXW-500": "LAN Wired",
-        "CV225": "WAN 4G 5G",
+        "V-Raptor": "LAN RF Halow",
         "BGH1": "LAN RF Halow",
-        "V-Raptor": "LAN RF Halow"
+        "CV225": "WAN 4G 5G",
+        "PXW-500": "LAN Wired",
+        "AtomOne SSM500": "LAN Wired",
+        "AtomOne SSM500 B4": "LAN Wired"
     },
     "lensControl": {
-        "AtomOne SSM500": "No Need",
-        "AtomOne SSM500 B4": "Iris",
-        "PXW-500": "IZF",
+        "V-Raptor": "No Need",
+        "BGH1": "No Need",
         "CV225": "No Need",
-        "BGH1": "IZF",
-        "V-Raptor": "IZF"
+        "PXW-500": "No Need",
+        "AtomOne SSM500": "No Need",
+        "AtomOne SSM500 B4": "No Need"
     },
     "lensType": {
-        "AtomOne SSM500": "B4-Mount",
-        "AtomOne SSM500 B4": "B4-Mount",
-        "PXW-500": "B4-Mount",
+        "V-Raptor": "TBD",
+        "BGH1": "TBD",
         "CV225": "Manual",
-        "BGH1": "B4-Mount",
-        "V-Raptor": "E-Mount"
+        "PXW-500": "B4-Mount",
+        "AtomOne SSM500": "B4-Mount",
+        "AtomOne SSM500 B4": "B4-Mount"
     },
     "lensMotor": {
-        "AtomOne SSM500": "No extra motors",
-        "AtomOne SSM500 B4": "No extra motors",
-        "PXW-500": "No extra motors",
-        "CV225": "No extra motors",
+        "V-Raptor": "TBD",
         "BGH1": "TBD",
-        "V-Raptor": "TBD"
+        "CV225": "No extra motors",
+        "PXW-500": "No extra motors",
+        "AtomOne SSM500": "No extra motors",
+        "AtomOne SSM500 B4": "No extra motors"
     }
 }
