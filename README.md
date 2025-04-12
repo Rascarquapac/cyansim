@@ -1,35 +1,24 @@
 # Evaluate Cyanview ressources base on use-case description
 A sample Streamlit application do determine Cyanview resources required by a givien use-case.
 
-# TODO
-## CYANVIEW DATA DESCRIPTION
-###  Improve camera database:
-- add a field for "Control Level" (for Broadcast ? Cinematic ?, General ?)
-- add field on maxDelaySystainable for decinding about network
-- fill missing protocol
-### Improve generic explanation on choices and special attention
-- create a FAQs pages on Odoo (bifirectionality, HF,)
-### Improve UI
-- Table of current selection: replace cable column by cameratype
-### Develop Network selection
-- add right network list
-### Develop Lens selection
-### Develop Extra-Devices (Tally, GPIO, NIO,…) selection
-### Develop Non-Camera-Device-Control (switchers,…)
-### Develop storing in database and emailing for quote request
-### Manage target application (Specialty, Broadcast, Cinematic,Remote Production)
-### Details:
-- SSM500 should require a RCP-Full ( 1 x camera ?)
-- Downloading SVG file
-- Analyze and display schematic on any change
-## FAQ
-- Delay in camera process control
-- RIO vs CI0
-- RIO, RIO-Live and CI0 Pro & Cons
-  - according to network
-  - flexibility
-  - power supply
-- Delay with 
+The purpose is to provide the candidate buyers (resellers, integrators, final users) with information so that
+- he can select the extra cyaniew devices (RIO/CI0/None), cables, tally, power supply related to his use-case with reasons why to select it
+- he knows about the level of performance of the cameras of its use-case
+- remarks
+
+# Description  of "Camera Descriptor" Spreadsheet
+## Camera Sheet
+Fields describing properties of the camera allowing to select the required accessories for data link, power supply and any recommendations related to the use of the camera.
+- Model : Display name of the camera
+- Reference :	Unique reference id of the camera
+- Protocol : Protocol id refering to the software part (driver) and cables managing the camera control as well as performances of the camera. It hsould be unique for the tuple ()
+- Brand : 
+- CameraLensControl	
+- LensMount	
+- cameraType
+- ManufacturerURL
+- Remark	
+- TallyOptions																		
 ## MERMAID
 - Display result with Mermaid
   - Check [this solution](https://discuss.streamlit.io/t/st-markdown-does-not-render-mermaid-graphs/25576/4)
