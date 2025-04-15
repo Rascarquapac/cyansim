@@ -1,13 +1,46 @@
-# Evaluate Cyanview ressources base on use-case description
+# Evaluate Cyanview ressources based on use-case description
 A sample Streamlit application do determine Cyanview resources required by a givien use-case.
 
-The purpose is to provide the candidate buyers (resellers, integrators, final users) with information so that
-- he can select the extra cyaniew devices (RIO/CI0/None), cables, tally, power supply related to his use-case with reasons why to select it
-- he knows about the level of performance of the cameras of its use-case
-- remarks
+The purpose is to provide the candidate buyers (resellers, integrators, final users) with information so that he can quickly describe a use-case by providing the equipment he plans to use
+- the cameras models
+- the lenses for these cameras
+- the medium networks 
+From this description the user will get 
+- a schema of the use-case
+- the Cyanview devices (RIO/CI0), cables, tally, power supply related to his use-case and explanation on selection
+- the level of performance of the cameras of its use-case
+- recommendations,and potential issues of its use-case (UF,…)
+## Dataflow
+- descriptor.py : creates a dataframe containing cameras properties for each camera by taking camera descriptions from  
+  - "Cyanview descriptor" gsheet ("Camera" sheet and CameraProtocol" sheet)
+  - or from the equivalent pickle file for faster use, when no update of the   "Cyanview descriptor" gsheet
+- ux_xxx.py: modules related to the user inferface used for describing a use-case (selection of cameras, lenses, network medium, tally) 
+  - Modules: 
+    - ux_default.py: creates the default values and default options for the user interface. 
+        - Lenses: the ux will require the user to provide lens properties (proposing a list of lenses should be nice but currently unreachabe due to the number of existing lenses and adapters). Setting values for these properties will provide full information for the devices and cables required
+        - the properties are
+            - lensControl i.e. what you need to control IZF
+            - lensType i.e. the internal capacity of the lens
+            - lensMotor: choice, if any, of the lens motors
+        - depending on the cameraLensCategory (a grouping of the cameras type according to the potential usable lenses), the lens user interface will propose 
+            - a default value for these parameters 
+            - options values in a selection list
+        - Network medium: the type of network for telemetry data
+        - A defautl value will be proposed
+        - A selection list will be proposed from existing alternatives
+    - ux_camera.py: selection of camera based on a substring, on the brand or on the type of camera
+    - ux_lens.py: selection of lens properties
+    - ux_network.py: selection of telemetry network
+    - ux_sidebar.py: sidebar display
+  - Output : 
+    - a dataframe with properties for each camera choosen
+    - a JSON file describing the setup. In check mode the JSON file can be replace the user selection in order to test independently the "Cyanview equipment induction"
 
-# Description  of "Camera Descriptor" Spreadsheet
-## Camera Sheet
+- gear_xxx: inducing Cyanview equipment according to use-case and Cyanview
+- draw_xxx: drawing of the use case equipped with Cyanview gear
+
+## Description  of "Camera Descriptor" Spreadsheet
+### Camera Sheet
 Fields describing properties of the camera allowing to select the required accessories for data link, power supply and any recommendations related to the use of the camera.
 - Model : Display name of the camera
 - Reference :	Unique reference id of the camera
@@ -19,11 +52,10 @@ Fields describing properties of the camera allowing to select the required acces
 - ManufacturerURL
 - Remark	
 - TallyOptions																		
-## MERMAID
+### Mermaid
 - Display result with Mermaid
   - Check [this solution](https://discuss.streamlit.io/t/st-markdown-does-not-render-mermaid-graphs/25576/4)
-## CODE
-## SSL Certificates:
+### SSL Certificates:
 /Applications/Python\ 3.12/Install\ Certificates.command
 ## FLOWCHART
 :::mermaid
