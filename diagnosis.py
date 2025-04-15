@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import json as json
 from descriptor import Descriptor
-from pool import Pool
+from ux_default import Pool
 from case import Case
 from view_camera   import ViewCamera
 from view_network  import ViewNetwork
