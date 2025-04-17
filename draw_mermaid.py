@@ -51,16 +51,18 @@ class Mermaid():
                         
         self.df = cyangear.df
         objectize()
-        mermaid_code = ''
-        mermaid_code = 'graph RL\n'
+        mermaid_code = '\n'
+        mermaid_code += 'graph RL\n'
         mermaid_code += cameras()
         mermaid_code += networks()
         mermaid_code += 'subgraph "Control Room" \n'
         mermaid_code += switches()
         mermaid_code += rcps()
         mermaid_code += 'end\n'
-        code = ':::mermaid\n' + mermaid_code  + '\n:::\n' 
+        standalone_code = ':::mermaid' + mermaid_code  + '\n:::\n' 
+        streamlit_code = mermaid_code
+        # Save the code to a file for debugging
         with open('./debug/mermaid_code_obj.md', 'w') as f:
-            f.write(code)
-        return(mermaid_code)
+            f.write(standalone_code)
+        return(streamlit_code)
     

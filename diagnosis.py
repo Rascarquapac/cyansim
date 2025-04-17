@@ -13,6 +13,7 @@ from message import Messages
 from draw     import Draw
 
 class Test():
+	# Using the class to test the simulator outside the streamlit environment
 	def __init__(self):
 		# PARAMETERS
 		gsheet    = True

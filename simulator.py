@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json as json
 from descriptor import Descriptor
-from pool import Pool
+from default_ux import Pool
 from case import Case
 from view_sidebar  import Sidebar
 from view_camera   import ViewCamera
@@ -107,5 +107,6 @@ with mermaid:
     if st.session_state.analyze_done :
         # MERMAID RENDERING
         html = st.session_state.draw.mermaidize(st.session_state.cyangear)
+        st.write("test")
         st.write(html, unsafe_allow_html=True)
 st.session_state.case.save_case()
