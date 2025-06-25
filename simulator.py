@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json as json
 from descriptor import Descriptor
-from default_ux import Pool
+from ux_default import Pool
 from case import Case
 from view_sidebar  import Sidebar
 from view_camera   import ViewCamera
