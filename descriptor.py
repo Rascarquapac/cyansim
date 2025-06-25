@@ -2,8 +2,10 @@ import pandas as pd
 import streamlit as st
 from pprint import pprint
 from streamlit_gsheets import GSheetsConnection
-from logger_config import logger
+from logger_config import setup_logger
 from constants import LensMountType, CameraType, NetworkType
+logger = setup_logger()
+
 class Descriptor():
     def __init__(self,updateFromGsheet=True,debug=False):
         self.pickel_filename = "./data/cameras.pkl"

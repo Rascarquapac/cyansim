@@ -4,7 +4,8 @@ import pandas as pd
 from mermaid.graph  import Graph
 from draw_mermaid import Mermaid
 from difflib import Differ
-from logger_config import logger
+from logger_config import setup_logger
+logger = setup_logger()
 
 #################### DRAW WITH MERMAID ###########################
 class Draw():

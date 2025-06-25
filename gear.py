@@ -3,7 +3,9 @@ from gear_lens import CameraLens
 from gear_glue import GlueTBD, DevicesState
 from gear_medium import Medium
 from gear_rcp import *
-
+from pprint import pprint
+from logger_config import setup_logger
+logger = setup_logger()
 class Cyangear():
     def __init__(self,pool) -> None:
         self.pool = pool
@@ -20,6 +22,10 @@ class Cyangear():
             paths_dict = {}
             if self.pool.df.empty: return paths_dict
             for camera_index in self.pool.df.index.to_list():
+                if self.pool.df.loc[camera_index,'Number'] == 0:
+                    message = f"Gear->pool.df: camera number equals 0 for {camera_index} in rows {self.pool.df.loc[camera_index]['Number']}"
+                    logger.error(message)
+                    raise ValueError(message)
                 for i in range(int(self.pool.df.loc[camera_index,'Number'])):
                     new_index = str(camera_index) + "_" + str(i) 
                     variables = []
