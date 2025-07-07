@@ -8,6 +8,7 @@ from logger_config import setup_logger
 logger = setup_logger()
 class Cyangear():
     def __init__(self,pool) -> None:
+        # Intialization with the pool object (cameras x properties) dataframe describing the production setup 
         self.pool = pool
         self.df  = {}
         self.dic = {}
