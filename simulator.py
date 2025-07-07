@@ -2,12 +2,8 @@ import streamlit as st
 import pandas as pd
 import json as json
 from descriptor import Descriptor
-from ux_default import Pool
+from user_interface import Pool, Sidebar, ViewCamera, ViewNetwork, ViewLens
 from case import Case
-from view_sidebar  import Sidebar
-from view_camera   import ViewCamera
-from view_network  import ViewNetwork
-from view_lens     import ViewLens
 from gear     import Cyangear
 from message  import Messages
 from draw     import Draw

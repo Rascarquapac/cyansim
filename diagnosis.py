@@ -2,11 +2,8 @@ import os
 import pandas as pd
 import json as json
 from descriptor import Descriptor
-from ux_default import Pool
+from user_interface import Pool, ViewCamera, ViewNetwork, ViewLens
 from case import Case
-from view_camera   import ViewCamera
-from view_network  import ViewNetwork
-from view_lens     import ViewLens
 from gear          import Cyangear
 from draw_mermaid  import Mermaid
 from message import Messages

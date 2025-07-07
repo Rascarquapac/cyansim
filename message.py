@@ -3,7 +3,7 @@ import re
 import os
 from pprint import pprint
 
-from view_camera  import ViewCamera
+from user_interface  import ViewCamera
 from gear import Cyangear
 
 class Messages():
