@@ -8,29 +8,68 @@ from constants import NetworkType
 
 class Pool:
 	def __init__(self):
+		# The camera_instances x properties dataframe specifying the setup of the production
 		self.df = pd.DataFrame()
 		self.cameralens = CameraLens()
 		self.debug = Debug()
 		self.initcase_dict = {}
 	def build(self,camera_pool):
 		# Add columns intiating the Lens definition UI ("Tab Lens")
-		def lensCategory(row):
-			return self.cameralens.cameraLens_category(row["Type"])
-		def user_lensControl(row):
-			return self.cameralens.options_needs_init[row["CameraLensCategory"]][0]
-		def user_lensType(row):
-			return self.cameralens.options_needs_init[row["CameraLensCategory"]][1]
-		def user_lensMotor(row):
-			return self.cameralens.options_needs_init[row["CameraLensCategory"]][2]
+		def lensCategory(camera_type):
+			return CameraLens().cameraLens_category(camera_type)
+		def user_defaults(camera_category):
+			# Return the default values for the camera type
+			return Options().needs_init[camera_category]
 		if camera_pool.empty:
 			pass
 		else:
+			camera_pool = camera_pool.copy()  
+			camera_pool["CameraLensCategory"] = camera_pool["Type"].apply(lensCategory)
+			camera_pool[['lensControl','lensType','lensMotor']] = camera_pool["CameraLensCategory"].apply(user_defaults).apply(pd.Series)
 			self.df = camera_pool
-			self.df.loc[:,"CameraLensCategory"] = self.df.apply(lensCategory,axis=1)
-			self.df.loc[:,"lensControl"]        = self.df.apply(user_lensControl,axis=1)
-			self.df.loc[:,"lensType"]           = self.df.apply(user_lensType,axis=1)
-			self.df.loc[:,"lensMotor"]          = self.df.apply(user_lensMotor,axis=1)
 
+class Options():
+	def __init__(self):
+		# Lens control options for each camera category
+		# The lens control is the type of lens control
+		# It can be "No control", "Basic control", "Good control", "Advanced control"
+		self.lensControl = {
+			CameraCategory.BROADCAST.value: ['No Need','Iris','IZF'],
+			CameraCategory.CINE_XCHANGE.value: ['No Need','Iris','IZF'],
+			CameraCategory.IZF_INTEGRATED.value: ['IZF'],
+			CameraCategory.FIXED_LENS.value: ['No Need'],
+			CameraCategory.MINICAM_MOT_LENS.value: ['No Need','IZF'],
+			CameraCategory.TBD.value: ['No Need'],
+		}
+		self.lensType = {
+			CameraCategory.BROADCAST.value: ['B4-Mount'],
+			CameraCategory.CINE_XCHANGE.value: ['B4-Mount','E-Mount','Cabrio','Cineservo','Primelens','Motorized Others','TBD'],
+			CameraCategory.IZF_INTEGRATED.value: ['Camera Integrated'],
+			CameraCategory.FIXED_LENS.value: ['Manual'],
+			CameraCategory.MINICAM_MOT_LENS.value: ['Manual'],
+			CameraCategory.TBD.value: ["No Need"],
+		}
+		# Motorization options for each camera category
+		# The motorization is the type of lens motorization
+		# It can be "No motor", "Motorized", "Manual"
+		# The motorization is the type of lens motorization
+		# It can be "No motor", "Motorized", "Manual"
+		self.motorType = {
+			CameraCategory.BROADCAST.value: ['No extra motors'],
+			CameraCategory.CINE_XCHANGE.value: ['No extra motors','Tilta','Arri','TBD'],
+			CameraCategory.IZF_INTEGRATED.value: ['Camera Integrated'],
+			CameraCategory.FIXED_LENS.value: ['Manual'],
+			CameraCategory.MINICAM_MOT_LENS.value: ['No extra motors','Dreamchip'],
+			CameraCategory.TBD.value: ['No extra motors'],
+		}
+		self.needs_init = {
+			CameraCategory.BROADCAST.value: ('No Need','B4-Mount','No extra motors'),
+			CameraCategory.CINE_XCHANGE.value: ('No Need','TBD','TBD'),
+			CameraCategory.IZF_INTEGRATED.value: ('IZF','Camera Integrated','No extra motors'),
+			CameraCategory.FIXED_LENS.value: ("No Need",'Manual','No extra motors'),
+			CameraCategory.MINICAM_MOT_LENS.value: ("No Need",'Manual','No extra motors'),
+			CameraCategory.TBD.value: ("No Need",'Manual','No extra motors'),
+		}
 class ViewCamera():
     def __init__(self,descriptor):
         self.df = descriptor.df
@@ -201,24 +240,22 @@ class ViewLens():
 							"Lens Control",
 							help= "Your needs for lens motorization",
 							# width="small",
-							options = self.pool.cameralens.options_needs_lensControl[cameraLensCategory],
-							# options = st.session_state.property.constraints[(cameraLensCategory,'LensControls')],
-							#options=st.session_state.property.options['LensUserControls'],
+							options = Options().lensControl[cameraLensCategory],
+							# options = self.pool.cameralens.options_needs_lensControl[cameraLensCategory],
 							required = True),
 						'lensType':  st.column_config.SelectboxColumn(
 							"Type of Lens",
 							help="Main characteristics of the lens",
 							# width="medium",
-							#options = st.session_state.property.options['LensTypes'],
-							options = self.pool.cameralens.options_needs_lensType[cameraLensCategory],
-							# options=st.session_state.property.constraints[(cameraLensCategory,'LensTypes')],
+							options = Options().lensType[cameraLensCategory],
+							# options = self.pool.cameralens.options_needs_lensType[cameraLensCategory],
 							required = True),
 						'lensMotor':  st.column_config.SelectboxColumn(
 							"Motorization",
 							help="Type of motorization",
 							# width="small",
-							options = self.pool.cameralens.options_needs_motorType[cameraLensCategory],
-							# options = st.session_state.property.constraints[(cameraLensCategory,'LensMotors')],
+							options = Options().motorType[cameraLensCategory],
+							# options = self.pool.cameralens.options_needs_motorType[cameraLensCategory],
 							required=True),
 						"Brand": "Brand",
 						},
@@ -252,8 +289,6 @@ class ViewLens():
 		# print(self.pool.df)
 		self.debug.record(data=self.pool.df,record=True,dump=True)
 		return final_df
-
-
 class ViewNetwork():
 	def __init__(self,pool):
 		self.pool = pool
