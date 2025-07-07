@@ -16,9 +16,9 @@
         "AtomOne SSM500 B4": 1
     },
     "Network": {
-        "V-Raptor": "LAN RF Halow",
-        "BGH1": "LAN RF Halow",
-        "CV225": "WAN 4G 5G",
+        "V-Raptor": "LAN Wired",
+        "BGH1": "LAN Wired",
+        "CV225": "LAN Wired",
         "PXW-500": "LAN Wired",
         "AtomOne SSM500": "LAN Wired",
         "AtomOne SSM500 B4": "LAN Wired"
