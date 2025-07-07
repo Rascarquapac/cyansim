@@ -6,6 +6,21 @@ from gear_rcp import *
 from pprint import pprint
 from logger_config import setup_logger
 logger = setup_logger()
+class Instances():
+    def __init__(self,pool_df):
+        self.df = self.flatten(pool_df)
+    def flatten(self,pool_df):
+        # Flatten the dataframe to a list of instances
+        instances = []
+        for index, row in pool_df.iterrows():
+            if row['Number'] > 0:
+                for i in range(int(row['Number'])):
+                    instance = row.copy()
+                    instance['Instance'] = f"{index}_{i}"
+                    instances.append(instance)
+        return pd.DataFrame(instances,columns=pool_df.columns,index='Instance')
+    def __str__(self):
+        return str(self.instances)
 class Cyangear():
     def __init__(self,pool) -> None:
         # Intialization with the pool object (cameras x properties) dataframe describing the production setup 
@@ -18,7 +33,7 @@ class Cyangear():
         self.devices = {}
     # Setup Cyangear dataframe with instancied nodes from Pool dataframe
     def create_gear(self):
-        # Dictionnary with keys being camera instance identifier, value being pool.df row related to camera model 
+        # From the pool of cameras (self.pool.df) creates 
         def dataframe_to_dic():
             paths_dict = {}
             if self.pool.df.empty: return paths_dict

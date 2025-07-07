@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 from pprint import pprint
 from streamlit_gsheets import GSheetsConnection
-from tabulate import tabulate
 from logger_config import setup_logger
 from constants import LensMountType, CameraType, BrandType, AdapterType, NetworkType
 logger = setup_logger()
