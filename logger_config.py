@@ -7,7 +7,8 @@ def setup_logger():
     logger.setLevel(logging.DEBUG)  # Set the logging level
 
     # Create a file handler
-    file_handler = logging.FileHandler("simulator.log")
+    file_handler = logging.FileHandler("simulator.log",mode = "w")   
+
     file_handler.setLevel(logging.INFO)  # Set file logging level
 
     # Create a console handler
@@ -21,6 +22,6 @@ def setup_logger():
 
     # Add handlers to the logger
     logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
+    # logger.addHandler(console_handler)
 
     return logger
