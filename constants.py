@@ -162,19 +162,33 @@ class CameraLens():
 	def cameraLens_category(self,cameraType):
 		# cameraMount can be suppressed except for exception
 		match (cameraType):
-			case ("TBD") : 
-				cameraLensCategory = "TBD"
-			case ("Slow Motion") | ("System") | ("BBlock") | ("Shoulder Camcorder") : 
-				cameraLensCategory = "Broadcast"
-			case ("CineStyle")|("Mirrorless") | ("Smartphone")       : 
-				cameraLensCategory = "Cine Interchangeable"
-			case ("PTZ") | ("Handheld Camcorder") | ("Minicam IZT")   : 
-				cameraLensCategory = "IZF Integrated"
-			case ("Minicam")    : 
-				cameraLensCategory = "Fixed Lens"
-			case ("Minicam Motorizable") : 
-				cameraLensCategory = "Minicam Motorizable Lens"
+			case (CameraType.TBD.value) : 
+				cameraLensCategory = CameraCategory.TBD.value
+			case (CameraType.SLOWMO.value) | (CameraType.SYSTEM.value) | (CameraType.BLOCK.value) | (CameraType.SHOULDER.value) : 
+				cameraLensCategory = CameraCategory.BROADCAST.value
+			case (CameraType.CINESTYLE.value)|(CameraType.MIRRORLESS.value) | (CameraType.SMARTPHONE.value)       : 
+				cameraLensCategory = CameraCategory.CINE_XCHANGE.value
+			case (CameraType.PTZ.value) | (CameraType.HANDHELD.value) | (CameraType.MINIZOOM.value)   : 
+				cameraLensCategory = CameraCategory.IZF_INTEGRATED.value
+			case (CameraType.MINICAM.value)    : 
+				cameraLensCategory = CameraCategory.FIXED_LENS.value
+			case (CameraType.MINIMOT.value) : 
+				cameraLensCategory = CameraCategory.MINICAM_MOT_LENS.value
 			case _: raise KeyError(f"cameraType= {cameraType}")
+		# match (cameraType):
+		# 	case ("TBD") : 
+		# 		cameraLensCategory = "TBD"
+		# 	case ("Slow Motion") | ("System") | ("BBlock") | ("Shoulder Camcorder") : 
+		# 		cameraLensCategory = "Broadcast"
+		# 	case ("CineStyle")|("Mirrorless") | ("Smartphone")       : 
+		# 		cameraLensCategory = "Cine Interchangeable"
+		# 	case ("PTZ") | ("Handheld Camcorder") | ("Minicam IZT")   : 
+		# 		cameraLensCategory = "IZF Integrated"
+		# 	case ("Minicam")    : 
+		# 		cameraLensCategory = "Fixed Lens"
+		# 	case ("Minicam Motorizable") : 
+		# 		cameraLensCategory = "Minicam Motorizable Lens"
+		# 	case _: raise KeyError(f"cameraType= {cameraType}")
 		return cameraLensCategory
 
 
