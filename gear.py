@@ -104,7 +104,7 @@ class Cyangear():
             self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
     def adapter(self,row):
         parameters=(row['Type'],row['Brand'],row['Reference'],row['lensControl'],row['lensType'],row['lensMotor'])
-        accessories =CameraLens.adapter(parameters)
+        accessories =CameraLens.adapters(parameters)
         return pd.Series([accessories[0], accessories[1],accessories[2]])
     def device_direct(self,row):
         dev = Medium.device_direct(row['Cable'],row['LensCable'],row['MotorCable'])
