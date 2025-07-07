@@ -6,5 +6,7 @@
 /.ipynb_checkpoints/*
 __pycache__/*
 /.streamlit/*
+/credentials/*
+/credentials
 test*
 .DS_Store
