@@ -6,7 +6,7 @@ from gear_rcp import *
 from pprint import pprint
 from logger_config import setup_logger
 logger = setup_logger()
-class Instances():
+class InstancesAsRows():
     def __init__(self,pool_df):
         self.df = self.flatten(pool_df)
     def flatten(self,pool_df):
@@ -18,9 +18,41 @@ class Instances():
                     instance = row.copy()
                     instance['Instance'] = f"{index}_{i}"
                     instances.append(instance)
-        return pd.DataFrame(instances,columns=pool_df.columns,index='Instance')
-    def __str__(self):
-        return str(self.instances)
+        df = pd.DataFrame(instances)
+        df.set_index('Instance', inplace=True)
+        # Suppress unused pool_df columns
+        df.drop(columns=['SupportURL', 'ManufacturerURL','Remark','Selected','Message'], inplace=True)
+        # Add result columns storing the results of protocol analyse
+        df['Camera_id'] = df.index
+        df['Device']    = ""
+        df['Device_id'] = ""
+        df['Switch_id'] = ""
+        df['RCP_id']    = ""
+        df['Camgroup']  = ""
+        df['RCPtype']   = ""
+        df['Fanout']    = 0
+        # Add result columns storing the results of lens analyse
+        df['LensCable']  = ""
+        df['MotorCable'] = ""
+        df['LensMotor']  = ""
+        return df
+class InstancesAsObjects():
+    def __init__(self,pool_df):
+        self.dic = self.flatten(pool_df)
+    def flatten(self,pool_df):
+        # Flatten the dataframe to a list of instances
+        instances_dic = {}
+        for index, row in pool_df.iterrows():
+            if row['Number'] > 0:
+                for i in range(int(row['Number'])):
+                    camera_id = f"{index}_{i}"
+                    cameralens = CameraLens()
+                    glue       = GlueTBD() 
+                    medium     = Medium()
+                    rcp        = RCP_TBD()
+                    instances_dic[camera_id]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
+        return instances_dic                    
+
 class Cyangear():
     def __init__(self,pool) -> None:
         # Intialization with the pool object (cameras x properties) dataframe describing the production setup 
@@ -71,7 +103,7 @@ class Cyangear():
             self.df['MotorCable'] = ""
             self.df['LensMotor']  = ""
             # User's Need parameters
-#            return
+            return
         def rewrite_columns():
            gear_level1_columns=  ['Reference', 'Protocol', 'Brand', 'LensMount',
        'Name', 'Type', 'Cable', 'MaxDelayToComplete', 'ControlCoverage',
@@ -90,7 +122,6 @@ class Cyangear():
            new_columns = pd.MultiIndex.from_arrays([gear_level1_columns, gear_level0_columns]) 
            # Assigner le nouveau MultiIndex aux colonnes du DataFrame
            #self.df.columns = new_columns
-
         # Create a dictionnary of objects associated to the dataframe index
         def set_objects_dic():
             for index in self.df.index.to_list():
@@ -101,6 +132,7 @@ class Cyangear():
                 medium     = Medium()
                 rcp        = RCP_TBD()
                 self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
+        # create_gear code
         if not self.pool.df.empty:
             paths_dict = dataframe_to_dic()
             self.df = dic_to_dataframe(paths_dict)
@@ -268,7 +300,9 @@ class Cyangear():
         self.devices = device_count(self.df)
 
     def analyze(self):
-        self.create_gear()
+        # self.create_gear()
+        self.df = InstancesAsRows(self.pool.df).df
+        self.dic = InstancesAsObjects(self.pool.df).dic
         self.devices_state = DevicesState(self.pool.df)
         # self.set_objects_dic()
         # Set the cable from current parameter values
