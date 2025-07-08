@@ -63,93 +63,6 @@ class Cyangear():
         self.rcps    = {}
         self.cables  = {}
         self.devices = {}
-    # Setup Cyangear dataframe with instancied nodes from Pool dataframe
-    def create_gear(self):
-        # From the pool of cameras (self.pool.df) creates 
-        def dataframe_to_dic():
-            paths_dict = {}
-            if self.pool.df.empty: return paths_dict
-            for camera_index in self.pool.df.index.to_list():
-                if self.pool.df.loc[camera_index,'Number'] == 0:
-                    message = f"Gear->pool.df: camera number equals 0 for {camera_index} in rows {self.pool.df.loc[camera_index]['Number']}"
-                    logger.error(message)
-                    raise ValueError(message)
-                for i in range(int(self.pool.df.loc[camera_index,'Number'])):
-                    new_index = str(camera_index) + "_" + str(i) 
-                    variables = []
-                    variables.extend(self.pool.df.loc[camera_index].tolist())
-                    paths_dict[new_index] = list(variables)
-            return paths_dict
-        # Create a dataframe from dictionnary   
-        def dic_to_dataframe(paths_dict):
-            df = pd.DataFrame.from_dict(paths_dict, orient = 'index', columns = self.pool.df.columns.values)
-            df.index.name = 'Instance'     
-            return(df)
-        # Suppress and add columns
-        def columns():
-            # Suppressunused column
-            self.df.drop(columns=['SupportURL', 'ManufacturerURL','Remark','Selected','Message'], inplace=True)
-            # Add result columns storing the results of protocol analyse
-            self.df['Camera_id'] = self.df.index
-            self.df['Device']    = ""
-            self.df['Device_id'] = ""
-            self.df['Switch_id'] = ""
-            self.df['RCP_id']    = ""
-            self.df['Camgroup']  = ""
-            self.df['RCPtype']   = ""
-            self.df['Fanout']    = 0
-            # Add result columns storing the results of lens analyse
-            self.df['LensCable']  = ""
-            self.df['MotorCable'] = ""
-            self.df['LensMotor']  = ""
-            # User's Need parameters
-            return
-        def rewrite_columns():
-           gear_level1_columns=  ['Reference', 'Protocol', 'Brand', 'LensMount',
-       'Name', 'Type', 'Cable', 'MaxDelayToComplete', 'ControlCoverage',
-       'Bidirectionnal', 'Number', 'Network', 'CameraLensCategory',
-       'lensControl', 'lensType', 'lensMotor', 'LensTypes', 'Camera_id',
-       'Device', 'Device_id', 'Switch_id', 'RCP_id', 'Camgroup', 'RCPtype',
-       'Fanout', 'LensCable', 'MotorCable', 'LensMotor', 'LensControlNeed',
-       'LensTypeNeed', 'LensMotorNeed']
-           gear_level0_columns = ['Camera', 'Camera', 'Camera', 'Lens',
-       'Camera', 'Camera', 'Camera', 'Medium', 'Camera',
-       'Camera', 'Camera', 'Medium', 'Lens',
-       'Lens', 'Lens', 'Lens', 'Lens', 'Camera',
-       'Glue', 'Glue', 'RCP', 'RCP', 'Camgroup', 'RCP',
-       'Glue', 'Lens', 'Lens', 'Lens', 'User',
-       'User', 'User']
-           new_columns = pd.MultiIndex.from_arrays([gear_level1_columns, gear_level0_columns]) 
-           # Assigner le nouveau MultiIndex aux colonnes du DataFrame
-           #self.df.columns = new_columns
-        # Create a dictionnary of objects associated to the dataframe index
-        def set_objects_dic():
-            for index in self.df.index.to_list():
-                df_row = self.df.loc[index]
-                # cameralens = CameraLens(index,df_row["Reference"],df_row["Protocol"],df_row["Cable"])
-                cameralens = CameraLens()
-                glue       = GlueTBD() 
-                medium     = Medium()
-                rcp        = RCP_TBD()
-                self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
-        # create_gear code
-        if not self.pool.df.empty:
-            paths_dict = dataframe_to_dic()
-            self.df = dic_to_dataframe(paths_dict)
-            columns()       
-            print("Colones de gear.df",self.df.columns)
-            set_objects_dic()
-        return 
-    # Create a dictionnary of objects associated to the dataframe index
-    def set_objects_dic(self):
-        for index in self.df.index.to_list():
-            df_row = self.df.loc[index]
-            # cameralens = CameraLens(index,df_row["Reference"],df_row["Protocol"],df_row["Cable"])
-            cameralens = CameraLens()
-            glue       = GlueTBD() 
-            medium     = Medium()
-            rcp        = RCP_TBD()
-            self.dic[index]= {'rcp':rcp,'medium':medium,'glue':glue,'cameralens':cameralens}
     def adapter(self,row):
         parameters=(row['Type'],row['Brand'],row['Reference'],row['lensControl'],row['lensType'],row['lensMotor'])
         accessories =CameraLens.adapters(parameters)
@@ -304,7 +217,6 @@ class Cyangear():
         self.df = InstancesAsRows(self.pool.df).df
         self.dic = InstancesAsObjects(self.pool.df).dic
         self.devices_state = DevicesState(self.pool.df)
-        # self.set_objects_dic()
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
         # # IP or serial converter
