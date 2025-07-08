@@ -79,8 +79,6 @@ class Messages():
         return(message)
     def gear_list(self,gear):
         message = ""
-        if gear.pool.df.empty:
-            message = "Error: message.gear_list--> Pool.df is empty"
         if not gear.dic:
             message = "Error: message.gear_list--> gear.dic is empty"
         else:

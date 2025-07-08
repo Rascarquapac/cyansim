@@ -56,10 +56,9 @@ class InstancesAsObjects():
 class Cyangear():
     def __init__(self,pool) -> None:
         # Intialization with the pool object (cameras x properties) dataframe describing the production setup 
-        self.pool = pool
-        self.df  = {}
-        self.dic = {}
-        self.devices_state = None
+        self.df = InstancesAsRows(pool.df).df
+        self.dic = InstancesAsObjects(pool.df).dic
+        self.devices_state = DevicesState(pool.df)
         self.rcps    = {}
         self.cables  = {}
         self.devices = {}
@@ -214,9 +213,9 @@ class Cyangear():
 
     def analyze(self):
         # self.create_gear()
-        self.df = InstancesAsRows(self.pool.df).df
-        self.dic = InstancesAsObjects(self.pool.df).dic
-        self.devices_state = DevicesState(self.pool.df)
+        # self.df = InstancesAsRows(self.pool.df).df
+        # self.dic = InstancesAsObjects(self.pool.df).dic
+        # self.devices_state = DevicesState(self.pool.df)
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
         # # IP or serial converter
