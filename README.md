@@ -7,6 +7,7 @@ The purpose is to provide the candidate buyers (resellers, integrators, final us
 - the medium networks 
 From this description the user will get 
 - a schema of the use-case
+- a Json description of the use case
 - the Cyanview devices (RIO/CI0), cables, tally, power supply related to his use-case and explanation on selection
 - the level of performance of the cameras of its use-case
 - recommendations,and potential issues of its use-case (UF,…)
@@ -14,9 +15,9 @@ From this description the user will get
 - descriptor.py : creates a dataframe containing cameras properties for each camera by taking camera descriptions from  
   - "Cyanview descriptor" gsheet ("Camera" sheet and CameraProtocol" sheet)
   - or from the equivalent pickle file for faster use, when no update of the   "Cyanview descriptor" gsheet
-- ux_xxx.py: modules related to the user inferface used for describing a use-case (selection of cameras, lenses, network medium, tally) 
+- user_interface.py: module related to the user inferface used for describing a use-case (selection of cameras, lenses, network medium, tally) 
   - Modules: 
-    - ux_default.py: creates the default values and default options for the user interface. 
+    - Options class: creates the default values and default options for the user interface. 
         - Lenses: the ux will require the user to provide lens properties (proposing a list of lenses should be nice but currently unreachabe due to the number of existing lenses and adapters). Setting values for these properties will provide full information for the devices and cables required
         - the properties are
             - lensControl i.e. what you need to control IZF
@@ -28,17 +29,19 @@ From this description the user will get
         - Network medium: the type of network for telemetry data
         - A defautl value will be proposed
         - A selection list will be proposed from existing alternatives
-    - ux_camera.py: selection of camera based on a substring, on the brand or on the type of camera
-    - ux_lens.py: selection of lens properties
-    - ux_network.py: selection of telemetry network
-    - ux_sidebar.py: sidebar display
+    - ViewCamera class: selection of camera based on a substring, on the brand or on the type of camera
+    - ViewLens class: selection of lens properties
+    - ViewNetwork class: selection of telemetry network
+    - Sidebar: sidebar display
   - Output : 
     - a dataframe with properties for each camera choosen
     - a JSON file describing the setup. In check mode the JSON file can be replace the user selection in order to test independently the "Cyanview equipment induction"
 
 - gear_xxx: inducing Cyanview equipment according to use-case and Cyanview
 - draw_xxx: drawing of the use case equipped with Cyanview gear
-
+## Input data
+- The simulator can use Cyanview device description from either a Google Gsheet or a pickle file. The choic is set by the "gsheet" variable in the secrets.toml file (.streamlit folder)
+- The simulator can be set with a predefined use case. The choice is set by the "case_init" variable in the secrets.toml file . The json file with the setup description is defined in simulator.py. The final setup description is always stored in the json file defined in simulator.py (…TODO: split input and output json file…)
 ## Description  of "Camera Descriptor" Spreadsheet
 ### Camera Sheet
 Fields describing properties of the camera allowing to select the required accessories for data link, power supply and any recommendations related to the use of the camera.

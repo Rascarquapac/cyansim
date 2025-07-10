@@ -355,7 +355,6 @@ class ViewNetwork():
 		final = pd.concat(list(blocks.values()))
 		self.pool.df = final
 		return final
-
 class Sidebar():
     def __init__(self) -> None:
         pass

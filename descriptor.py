@@ -102,6 +102,7 @@ class Descriptor():
 			'Model','Reference','Protocol','LensMount','ManufacturerURL','Remark'])        
 		logger.info("Descriptor-->Cameras table successfully loaded from Gsheet")
 		cam_df = Clean(df=cam_df).clean_cameras()
+		cam_df['Name'] = cam_df['Model']
 		return cam_df
 	def get_protocol_gsheet(self): 
 		conn = st.connection("protocols", type=GSheetsConnection)
