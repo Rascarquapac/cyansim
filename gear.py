@@ -1,5 +1,5 @@
 import pandas as pd
-from gear_lens import CameraLens
+from constants import CameraLens
 from gear_glue import GlueTBD, DevicesState
 from gear_medium import Medium
 from gear_rcp import *
@@ -55,10 +55,16 @@ class InstancesAsObjects():
 
 class Cyangear():
     def __init__(self,pool) -> None:
+        self.pool = pool
         # Intialization with the pool object (cameras x properties) dataframe describing the production setup 
-        self.df = InstancesAsRows(pool.df).df
-        self.dic = InstancesAsObjects(pool.df).dic
-        self.devices_state = DevicesState(pool.df)
+        if not pool.df.empty:
+            self.df = InstancesAsRows(pool.df).df
+            self.dic = InstancesAsObjects(pool.df).dic
+            self.devices_state = DevicesState(pool.df)
+        else:
+            self.df = pd.DataFrame()
+            self.dic = {}
+            self.devices_state = DevicesState(pd.DataFrame())
         self.rcps    = {}
         self.cables  = {}
         self.devices = {}
@@ -213,9 +219,9 @@ class Cyangear():
 
     def analyze(self):
         # self.create_gear()
-        # self.df = InstancesAsRows(self.pool.df).df
-        # self.dic = InstancesAsObjects(self.pool.df).dic
-        # self.devices_state = DevicesState(self.pool.df)
+        self.df = InstancesAsRows(self.pool.df).df
+        self.dic = InstancesAsObjects(self.pool.df).dic
+        self.devices_state = DevicesState(self.pool.df)
         # Set the cable from current parameter values
         self.df[['LensCable','MotorCable','LensMotor']]=self.df.apply(self.adapter,axis=1)
         # # IP or serial converter
